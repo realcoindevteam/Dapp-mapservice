@@ -7,9 +7,17 @@ var bodyParser = require('body-parser')
     , static = require('serve-static')
     , errorHandler = require('errorhandler');
 
+var mongoose = require('mongoose');
+
+var user = require('./routes/user');
+
 var expressErrorHandler = require('express-error-handler');
 
 var expressSession = require('express-session');
+
+var database;
+
+
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
@@ -29,15 +37,41 @@ app.use(expressSession({
 
 var router = express.Router();
 
-router.route('/login').post(function(req, res) {
-    console.log('login route called');
-    res.send('<h1>login router called</h1>');
-});
+router.route('/login').post(user.login);
 
 app.use('/', router);
 
+function connectDB() {
+    var databaseUrl = 'mongodb://localhost:27017/local';
+
+    mongoose.Promise = global.Promise;
+    mongoose.connect(databaseUrl);
+    database = mongoose.connection;
+
+    database.on('open', function() {
+        console.log('Database connection is created');
+        createUserSchema(database);
+    });
+
+    database.on('disconnected', function() {
+        console.log('Database connection disconnected');
+    });
+
+    database.on('error', console.error.bind(console, 'Database connection error'));
+
+    app.set('database', database);
+}
+
+function createUserSchema(database) {
+    database.UserSchema = require('./database/user_schema').createSchema(mongoose);
+
+    database.UserModel = mongoose.model('users2', database.UserSchema);
+    console.log('UserModel is defined.');
+}
+
 var server = http.createServer(app).listen(app.get('port'), function () {
     console.log('starting server. port : ' + app.get('port'));
+    connectDB();
 });
 
 
