@@ -17,8 +17,6 @@ var expressSession = require('express-session');
 
 var database;
 
-
-
 var app = express();
 app.set('port', process.env.PORT || 3000);
 
@@ -40,6 +38,15 @@ var router = express.Router();
 router.route('/login').post(user.login);
 
 app.use('/', router);
+
+var errorHandler = expressErrorHandler({
+    static: {
+        '404': './public/404.html'
+    }
+});
+
+app.use(expressErrorHandler.httpError(404));
+app.use(errorHandler);
 
 function connectDB() {
     var databaseUrl = 'mongodb://localhost:27017/local';
