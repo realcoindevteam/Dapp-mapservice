@@ -41,13 +41,25 @@ var login = function (req, res) {
 
         if (docs) {
             console.log('login success');
-            res.writeHead(200, {
-                "Content-Type": "text/html;charset=utf8"
+            res.writeHead(200, {"Content-Type":"text/html;charset=utf8"});
+            var context = {
+                userid: paramId,
+                username: docs[0].name
+            };
+            req.app.render('login_success', context, function(err, html) {
+                if(err) {
+                    console.err('view rendering error : ' + err.stack);
+                    res.writeHead(200, {
+                        "Content-Type": "text/html;charset=utf8"
+                    });
+                    res.write('<h3>뷰 렌더링 중 에러 발생/h3>');
+                    res.write('<br><p>' + err.stack + '</p>');
+                    res.end();
+                    return;
+                }
+
+                res.end(html);
             });
-            res.write('<h3>로그인 성공</h3>');
-            res.write('<br><div><p>사용자 : ' + docs.name + '</p></div>');
-            res.write('<br><br><a href="/login.html">다시 로그인 하기</a>')
-            res.end();
         } else {
             console.log('login failed');
             res.writeHead(200, {

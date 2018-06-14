@@ -3,23 +3,20 @@ var express = require('express')
     , path = require('path');
 
 var bodyParser = require('body-parser')
-    , cookieParser = require('cookie-parser')
     , static = require('serve-static')
-    , errorHandler = require('errorhandler');
+    , cookieParser = require('cookie-parser')
+    , expressSession = require('express-session')
+    , expressErrorHandler = require('express-error-handler');
 
 var user = require('./routes/user');
-
 var config = require('./config');
-
 var databaseLoader = require('./database/database_loader');
-
 var route_loader = require('./routes/route_loader');
 
-var expressErrorHandler = require('express-error-handler');
-
-var expressSession = require('express-session');
-
 var app = express();
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
 app.set('port', config.server_port || 3000);
 
 app.use(bodyParser.urlencoded({ extended: false }));
