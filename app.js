@@ -8,13 +8,11 @@ var bodyParser = require('body-parser')
     , expressSession = require('express-session')
     , expressErrorHandler = require('express-error-handler');
 
-var user = require('./routes/user');
-var config = require('./config/config');
-var databaseLoader = require('./database/database_loader');
-var route_loader = require('./routes/route_loader');
-
 var passport = require('passport');
 var flash = require('connect-flash');
+
+var config = require('./config/config');
+var databaseLoader = require('./database/database_loader');
 
 var app = express();
 
