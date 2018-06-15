@@ -19,6 +19,18 @@ module.exports = function (router, passport) {
         failureFlash: true
     }));
 
+    router.route('/signup').get(function (req, res) {
+        console.log('/singup get routing called');
+
+        res.render('signup.ejs', {message: req.flash('signupMessage')});
+    });
+
+    router.route('/signup').post(passport.authenticate('local-signup', {
+        successRedirect: '/profile',
+        failureRedirect: '/login',
+        failureFlash: true
+    }));
+
     router.route('/profile').get(function (req, res) {
         console.log('/profile get routing called');
 

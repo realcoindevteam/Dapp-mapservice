@@ -1,5 +1,6 @@
 
 var local_login = require('../passport/local_login');
+var local_signup = require('../passport/local_signup');
 
 module.exports = function(app, passport) {
     console.log('config_passport called');
@@ -19,5 +20,6 @@ module.exports = function(app, passport) {
     });
 
     passport.use('local-login', local_login);
+    passport.use('local-signup', local_signup);
     console.log('passport strategy registered');
 };

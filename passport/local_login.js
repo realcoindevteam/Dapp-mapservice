@@ -27,4 +27,4 @@ module.exports = new LocalStrategy({
         console.log('authentication complete');
         return done(null, user);
     });
-})
+});
