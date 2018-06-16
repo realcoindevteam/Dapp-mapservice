@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
     <style>
         html, body {
             height: 100%;
@@ -26,6 +28,12 @@
             text-align: center;
         }
     </style>
+
+    <script>
+        function button_click(name) {
+            alert("버튼을 누르셨습니다." + name);
+        }
+    </script>
 </head>
 
 <body>
@@ -36,7 +44,30 @@
         <h3>My Balance Screen</h3>
     </div>
     <div id="assetList" class="tabcontent">
-        <h3>Real State List Screen</h3>
+        <h3>Real estate list</h3>
+        <div>
+            <ul>  
+                <% for(var i = 0; i < assetList.length; i++) { 
+                    var name = assetList[i].name;
+                    var address = assetList[i].address; 
+                    var lat = assetList[i].lat;
+                    var lng = assetList[i].lng;
+                    %>
+                    <li>
+                        #<%=i %> - 건물이름 : <%=name %>, 주소 : <%=address %>
+                        <form id="form-id" method="get" action="/map">
+                            <input type="hidden" name="name" value="<%=name %>">
+                            <input type="hidden" name="address" value="<%=address %>">
+                            <input type="hidden" name="lat" value="<%=lat %>">
+                            <input type="hidden" name="lng" value="<%=lng %>">
+                            
+                            <button onclick="document.getElementById('form-id').submit();">지도</button>
+                        </form>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+
         <input type="button" name="map" value="지도" onclick="location.href='./map.html'";>
     </div>
 

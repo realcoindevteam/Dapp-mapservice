@@ -25,6 +25,11 @@ Schema.createSchema = function (mongoose) {
             index: 'hashed',
             default: ''
         },
+        grade: {
+            type: String,
+            required: true,
+            default: 'user'
+        },
         age: {
             type: Number,
             default: -1

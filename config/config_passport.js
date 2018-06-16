@@ -7,14 +7,14 @@ module.exports = function(app, passport) {
     
     passport.serializeUser(function(user, done) {
         console.log('serializeUser called');
-        console.dir(user);
+       // console.dir(user);
     
         done(null, user);
     });
     
     passport.deserializeUser(function(user, done) {
         console.log('deserializeUser called');
-        console.dir(user);
+   //     console.dir(user);
     
         done(null, user);
     });

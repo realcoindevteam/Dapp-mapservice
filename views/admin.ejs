@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        html, body {
+            height: 100%;
+            font-family: "Lato", sans-serif;
+        }
+
+        .tablink {
+            background-color: #ccc;
+            color: black;
+            float: left;
+            border: 1px solid #555;
+            width: 50%;
+            padding: 30px;
+            font-size: 17px;
+        }
+
+        .tabcontent {
+            color: black;
+            display: none;
+            height: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="tablink" onclick="openInformation('myBalance')" id="defaultOpen">Admin</button>
+    <button class="tablink" onclick="openInformation('assetList')">Real State List</button>
+
+    <div id="myBalance" class="tabcontent">
+        <h3>Admin Screen</h3>
+    </div>
+    <div id="assetList" class="tabcontent">
+        <h3>Real State List Screen</h3>
+        <input type="button" name="map" value="지도" onclick="location.href='./map.html'";>
+    </div>
+
+    <script>
+        function openInformation(id) {
+            var i, tabcontent;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            console.log('tabcontent length : ' + tabcontent.length);
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            document.getElementById(id).style.display = "block"
+        }
+
+        document.getElementById("defaultOpen").click();
+    </script>
+</body>
+
+</html>
