@@ -39,7 +39,7 @@ module.exports = function (router, passport) {
         var paramLat = req.query.lat;
         var paramLng = req.query.lng;
         console.log('/map called  :' + paramName + ', ' + paramAddress + ', ' + paramLat + ', ' + paramLng);
-        res.render('map.ejs');
+        res.render('map.ejs', {name:paramName, address:paramAddress, lat:paramLat, lng:paramLng});
     });
 
     router.route('/profile').get(function (req, res) {

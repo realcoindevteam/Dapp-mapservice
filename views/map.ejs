@@ -25,29 +25,31 @@
     <script>
         function initMap() {
             // Map options
+            var paramLat = <%=lat %>;
+            var paramLng = <%=lng %>;
             var options = {
                 zoom: 13,
-                center: { lat: 37.5326, lng: 127.0246 }
+                center: { lat: paramLat, lng: paramLng }
             }
 
 
             // New map
             var map = new google.maps.Map(document.getElementById('map'), options);
-            
-                        // Add marker
-                        var marker = new google.maps.Marker({
-                            position:{lat:37.5326, lng:127.0246},
-                            map:map,
-                            icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
-                        });
-            
-                        var infoWindow = new google.maps.InfoWindow({
-                            content:'<h1>Lynn MA</h1>'
-                        });
-            
-                        marker.addListener('click', function() {
-                            infoWindow.open(map, marker);
-                        });
+
+            // Add marker
+            var marker = new google.maps.Marker({
+                position: { lat: paramLat, lng: paramLng },
+                map: map,
+                icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+            });
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: '<h1><%=name %>, <%=address %></h1>'
+            });
+
+            marker.addListener('click', function () {
+                infoWindow.open(map, marker);
+            });
                         
 
             // addMarker({lat:37.5326, lng:127.0246});
