@@ -3,8 +3,11 @@
 
 <head>
     <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
             font-family: "Lato", sans-serif;
         }
@@ -26,6 +29,20 @@
             text-align: center;
         }
     </style>
+
+    <script>
+        function button_click(action) {
+            var form = document.getElementById('admin-form-id');
+            if(action == 'save') {
+                alert('save button clicked ');
+            } 
+
+            if(action == 'map') {
+                form.action = '/map';
+            }
+            form.submit();
+        }
+    </script>
 </head>
 
 <body>
@@ -34,10 +51,74 @@
 
     <div id="myBalance" class="tabcontent">
         <h3>Admin Screen</h3>
+        <form action="#" method="get" name="admin-form-name" id="admin-form-id">
+            <table>
+                <tr>
+                    <td>
+                        <lable>Latitude</lable>
+                    </td>
+                    <td>
+                        <input type="text" name="lat">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <lable>Longitude</lable>
+                    </td>
+                    <td>
+                        <input type="text" name="lng">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <lable>Token</lable>
+                    </td>
+                    <td>
+                        <input type="text" name="token">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <lable>Name</lable>
+                    </td>
+                    <td>
+                        <input type="text" name="name">
+                    </td>
+                </tr>
+            </table>
+            <input type="button" value="저장" onclick="button_click('save')"/>
+            <input type="button" value="맵" onclick="button_click('map')"/>
+        </form>
     </div>
     <div id="assetList" class="tabcontent">
-        <h3>Real State List Screen</h3>
-        <input type="button" name="map" value="지도" onclick="location.href='./map.html'";>
+        <h3>Real estate list</h3>
+        <div>
+            <ul>
+                <% for(var i = 0; i < assetList.length; i++) { 
+                    var name = assetList[i].name;
+                    var address = assetList[i].address; 
+                    var lat = assetList[i].lat;
+                    var lng = assetList[i].lng;
+                    %>
+                    <li>
+                        #
+                        <%=i %> - 건물이름 :
+                            <%=name %>, 주소 :
+                                <%=address %>
+                                    <form id="form-id" method="get" action="/map">
+                                        <input type="hidden" name="name" value="<%=name %>">
+                                        <input type="hidden" name="address" value="<%=address %>">
+                                        <input type="hidden" name="lat" value="<%=lat %>">
+                                        <input type="hidden" name="lng" value="<%=lng %>">
+
+                                        <button onclick="document.getElementById('form-id').submit();">지도</button>
+                                    </form>
+                    </li>
+                    <% } %>
+            </ul>
+        </div>
+
+        <input type="button" name="map" value="지도" onclick="location.href='./map.html'" ;>
     </div>
 
     <script>
