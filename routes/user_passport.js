@@ -1,5 +1,15 @@
 var mockupData = require('../test/mockup_data');
 
+var mysql = require('mysql');
+var pool = mysql.createPool({
+    connectionLimit:10,
+    host:'mysqlinstance-cluster-1.cluster-c1q9sxwqtbiw.ap-northeast-2.rds.amazonaws.com',
+    user:'root',
+    password:'asdf1234',
+    database:'testdb',
+    debug:false
+});
+
 module.exports = function (router, passport) {
     console.log('user_passport called');
 
@@ -87,5 +97,57 @@ module.exports = function (router, passport) {
 
         req.logout();
         res.redirect('/login');
+    });
+
+    router.route('/testadd').get(function (req, res) {
+        console.log('/testadd get routing called');
+        addUser('ranmaru520000@gmail.com', '1', 'james', '0', 'park', 'test1234', 'secret', 
+        function(err, addedUser) {
+            if (err) {
+                console.log('에러 발생.');
+                res.writeHead(200, {"Content-Type":"text/html;charset=utf8"});
+                res.write('<h1><에러발생/h1>');
+                res.end();
+                return;
+            }
+
+            if(addedUser) {
+                console.dir(addedUser);
+            }
+        });
+    });
+
+    router.route('testlist').get(function (req, res) {
+        console.log('/testlist get routing called');
+        
+    });
+};
+
+var addUser = function(email, enabled, firstName, isUsing2FA, lastName, password, secret, callback) {
+    pool.getConnection(function(err, conn) {
+        if(err) {
+            if(conn) {
+                conn.release();
+            }
+            callback(err, null);
+            return;
+        }
+
+        console.log('데이터베이스 연결의 스레드 아이디 : ' + conn.threadId);
+
+        var data = {email:email, enabled:enabled, firstName:firstName, isUsing2FA:isUsing2FA, 
+            lastName:lastName, password:password, secret:secret};
+        var exec = conn.query('insert into user_account set ?', data, function(err, result) {
+            conn.release();
+            console.log('실행된 SQL : ' + exec.sql);
+
+            if(err) {
+                console.log('SQL 실행 시 에러 발생.');
+                callback(err, null);
+                return;
+            }
+
+            callback(null, result);
+        });
     });
 };
