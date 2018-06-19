@@ -1,11 +1,23 @@
 var mongoose = require('mongoose');
 
+var mysql = require('mysql');
+
 var database = {};
 
 database.init = function(app, config) {
     console.log('database loader init called');
-
     connect(app, config);
+
+    var pool = mysql.createPool({
+        connectionLimit:10,
+        host:'mysqlinstance-cluster-1.cluster-c1q9sxwqtbiw.ap-northeast-2.rds.amazonaws.com',
+        user:'root',
+        password:'asdf1234',
+        database:'testdb',
+        debug:false
+    });
+    
+    app.set('pool', pool);
 }
 
 function connect(app, config) {

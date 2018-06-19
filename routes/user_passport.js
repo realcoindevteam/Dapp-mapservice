@@ -1,15 +1,5 @@
 var mockupData = require('../test/mockup_data');
 
-var mysql = require('mysql');
-var pool = mysql.createPool({
-    connectionLimit:10,
-    host:'mysqlinstance-cluster-1.cluster-c1q9sxwqtbiw.ap-northeast-2.rds.amazonaws.com',
-    user:'root',
-    password:'asdf1234',
-    database:'testdb',
-    debug:false
-});
-
 module.exports = function (router, passport) {
     console.log('user_passport called');
 
@@ -73,9 +63,9 @@ module.exports = function (router, passport) {
 
             if (Array.isArray(req.user)) {
                 console.log('user is array');
-                console.dir(req.user[0]._doc);
-                userInfo = req.user[0]._doc;
-                //res.render('profile.ejs', { user: req.user[0]._doc });
+                console.dir(req.user[0]);
+                userInfo = req.user[0];
+                res.render('profile.ejs', { assetList: assetList });
             } else {
                 console.log('user is not array');
                 console.dir(req.user);
@@ -83,12 +73,12 @@ module.exports = function (router, passport) {
                 //res.render('profile.ejs', { user: req.user });
             }
 
-            console.log('user grade : ' + userInfo.grade);
-            if(userInfo.grade == 'admin') {
-                res.render('admin.ejs', { assetList: assetList} );
-            } else {
-                res.render('profile.ejs', { assetList: assetList} );
-            }
+            // console.log('user grade : ' + userInfo.grade);
+            // if(userInfo.grade == 'admin') {
+            //     res.render('admin.ejs', { assetList: assetList} );
+            // } else {
+            //     res.render('profile.ejs', { assetList: assetList} );
+            // }
         }
     });
 
@@ -101,7 +91,7 @@ module.exports = function (router, passport) {
 
     router.route('/testadd').get(function (req, res) {
         console.log('/testadd get routing called');
-        addUser('ranmaru520000@gmail.com', '1', 'james', '0', 'park', 'test1234', 'secret', 
+        addUser(req.app.get('pool'), 'ranmaru520002@gmail.com', '1', 'james', '0', 'park', 'test1234', 'secret', 
         function(err, addedUser) {
             if (err) {
                 console.log('에러 발생.');
@@ -123,7 +113,7 @@ module.exports = function (router, passport) {
     });
 };
 
-var addUser = function(email, enabled, firstName, isUsing2FA, lastName, password, secret, callback) {
+var addUser = function(pool, email, enabled, firstName, isUsing2FA, lastName, password, secret, callback) {
     pool.getConnection(function(err, conn) {
         if(err) {
             if(conn) {
@@ -135,7 +125,7 @@ var addUser = function(email, enabled, firstName, isUsing2FA, lastName, password
 
         console.log('데이터베이스 연결의 스레드 아이디 : ' + conn.threadId);
 
-        var data = {email:email, enabled:enabled, firstName:firstName, isUsing2FA:isUsing2FA, 
+        var data = {id:3, email:email, enabled:enabled, firstName:firstName, isUsing2FA:isUsing2FA, 
             lastName:lastName, password:password, secret:secret};
         var exec = conn.query('insert into user_account set ?', data, function(err, result) {
             conn.release();
