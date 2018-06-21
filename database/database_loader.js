@@ -1,12 +1,13 @@
 var mongoose = require('mongoose');
 
 var mysql = require('mysql');
+var crypto = require('crypto');
 
 var database = {};
 
 database.init = function(app, config) {
     console.log('database loader init called');
-    connect(app, config);
+ //   connect(app, config);
 
     var pool = mysql.createPool({
         connectionLimit:10,
@@ -16,8 +17,20 @@ database.init = function(app, config) {
         database:'testdb',
         debug:false
     });
+
+    var encryptPassword = function (plainText, inSalt) {
+        console.log('encryptPassword called ' + crypto + ', ' + inSalt + ', ' + this.salt);
+        if (inSalt) {
+            console.log('encryptedPasswrod 1');
+            return crypto.createHmac('sha1', inSalt).update(plainText).digest('hex');
+        } else {
+            console.log('encryptedPasswrod 2');
+            return crypto.createHmac('sha1', this.salt).update(plainText).digest('hex');
+        }
+    };
     
     app.set('pool', pool);
+    app.set('encryptPassword', encryptPassword);
 }
 
 function connect(app, config) {

@@ -8,6 +8,8 @@ module.exports = new LocalStrategy({
     console.log('local-login passport called : ' + email + ', ' + password);
 
     var pool = req.app.get('pool');
+    var encryptPassword = req.app.get('encryptPassword');
+
     pool.getConnection(function(err, conn) {
         if(err) {
             if(conn) {
@@ -43,6 +45,7 @@ module.exports = new LocalStrategy({
             console.log('email -> ' + email + ', rows.email -> ' + rows[0].email + ', result -> ' + (email == rows[0].email));
 
             var authenticated = (email == rows[0].email && password == rows[0].password);
+            console.log('encrypted password -> ' + encryptPassword(password, Math.round((new Date().valueOf() * Math.random())) + ''));
             if(!authenticated) {
                 console.log('password does not match');
                 return done(null, false, req.flash('loginMessage', '비밀번호가 일치하지 않습니다.'));
