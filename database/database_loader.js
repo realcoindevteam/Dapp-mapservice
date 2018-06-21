@@ -7,15 +7,37 @@ var database = {};
 
 database.init = function(app, config) {
     console.log('database loader init called');
- //   connect(app, config);
-
+ 
     var pool = mysql.createPool({
         connectionLimit:10,
-        host:'mysqlinstance-cluster-1.cluster-c1q9sxwqtbiw.ap-northeast-2.rds.amazonaws.com',
-        user:'root',
-        password:'asdf1234',
+        host: config.db_url,
+        user:config.db_id,
+        password:config.db_password,
         database:'testdb',
         debug:false
+    });
+
+    pool.getConnection(function(err, conn) {
+        if(err) {
+            console.log('database init getConnection error');
+            conn.release();
+            return;
+        }
+
+        let createAssets = 'CREATE TABLE IF NOT EXISTS assets('
+            + 'id INT NOT NULL AUTO_INCREMENT,'
+            + 'PRIMARY KEY(id),'
+            + 'name VARCHAR(30),'
+            + 'address VARCHAR(255),'
+            + 'token VARCHAR(255),'
+            + 'latitude DECIMAL(9,6),'
+            + 'longitude DECIMAL(9,6)'
+            + ')';
+
+        conn.query(createAssets, function(err) {
+            console.log('query -> ' + createAssets);
+            if (err) throw err;
+        });
     });
 
     var encryptPassword = function (plainText, inSalt) {

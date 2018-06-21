@@ -34,7 +34,9 @@
         function button_click(action) {
             var form = document.getElementById('admin-form-id');
             if(action == 'save') {
-                alert('save button clicked ');
+                //alert('save button clicked ');
+                form.action = '/saveassets';
+                form.method = 'post';
             } 
 
             if(action == 'map') {
