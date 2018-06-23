@@ -10,16 +10,26 @@ module.exports = function (router, passport) {
     });
 
     router.route('/login').get(function (req, res) {
-        console.log('/login get routing called');
-
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+        console.log('/login get routing called : ' + req.user);
+        res.redirect('/login.html');
+     //   res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
     router.route('/login').post(passport.authenticate('local-login', {
-        successRedirect: '/profile',
-        failureRedirect: '/login',
+        successRedirect: '/loginsuccess',
+        failureRedirect: '/loginfailed',
         failureFlash: true
     }));
+
+    router.route('/loginsuccess').get(function(req, res) {
+        console.log('/loginsuccess get routing called');
+        res.send('<p>login success<br><a href="/profile">my page 로 이동</a></p>');
+    });
+
+    router.route('/loginfailed').get(function(req, res) {
+        console.log('loginfailed get routing called');
+        res.send('<p>login failed</p>');
+    });
 
     router.route('/signup').get(function (req, res) {
         console.log('/singup get routing called');
