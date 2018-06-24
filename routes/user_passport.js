@@ -146,8 +146,8 @@ module.exports = function (router, passport) {
                         console.log('user is array');
                         console.dir(req.user[0]);
                         userInfo = req.user[0];
-                        res.render('profile.ejs', { assetList: assetList });
-                        //res.render('admin.ejs', { assetList: assetList });
+                        //res.render('profile.ejs', { assetList: assetList });
+                        res.render('admin.ejs', { assetList: assetList });
                     } else {
                         console.log('user is not array');
                         console.dir(req.user);
