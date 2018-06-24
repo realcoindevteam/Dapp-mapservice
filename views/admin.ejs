@@ -99,8 +99,8 @@
                 <% for(var i = 0; i < assetList.length; i++) { 
                     var name = assetList[i].name;
                     var address = assetList[i].address; 
-                    var lat = assetList[i].lat;
-                    var lng = assetList[i].lng;
+                    var lat = assetList[i].latitude;
+                    var lng = assetList[i].longitude;
                     %>
                     <li>
                         #
@@ -120,7 +120,6 @@
             </ul>
         </div>
 
-        <input type="button" name="map" value="지도" onclick="location.href='./map.html'" ;>
     </div>
 
     <script>
