@@ -4,11 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script>
         function postLogin() {
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
-            var data = {email:email, password:password};
+            var data = { email: email, password: password };
             console.log('postLogin data');
             console.dir(data);
             var params = typeof data == 'string' ? data :
@@ -32,30 +37,21 @@
 </head>
 
 <body>
-    <h1>Login 1</h1>
-    <br>
-        <table>
-            <tr>
-                <td>
-                    <label>ID</label>
-                </td>
-                <td>
-                    <input type="text" name="email", id="email">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Password</label>
-                </td>
-                <td>
-                    <input type="password" name="password", id="password">
-                </td>
-            </tr>
-        </table>
-        <input type="button" id='loginbutton' onclick='postLogin()' value="send" name="">
-
-    <div>
-        <p id="result">loing state area</p>
+    <div class="container">
+        <h1>Login 1</h1>
+        <br>
+        <div class="form-group">
+            <label for="email">Name:</label>
+            <input type="text" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="form-group">Password:</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        <button type="button" class="btn btn-primary" id="loginbutton" onclick="postLogin()">Login</button>
+        <div>
+            <p id="result"></p>
+        </div>
     </div>
 </body>
 

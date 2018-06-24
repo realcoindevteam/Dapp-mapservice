@@ -3,23 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style>
         html,
         body {
             height: 100%;
             font-family: "Lato", sans-serif;
-        }
-
-        .tablink {
-            background-color: #ccc;
-            color: black;
-            float: left;
-            border: 1px solid #555;
-            width: 50%;
-            padding: 30px;
-            font-size: 17px;
         }
 
         .tabcontent {
@@ -50,8 +42,8 @@
             console.log('getEtherBalance call');
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'https://api.etherscan.io/api?module=account&action=balance&address=0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a&tag=latest&apikey=YourApiKeyToken');
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState === 4 && xhr.status === 200) {
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log('ehter balance : ' + xhr.responseText);
                     document.querySelector('#etherbalance').innerHTML = xhr.responseText;
                 }
@@ -63,8 +55,8 @@
             console.log('getTransferEvent call');
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'http://api.etherscan.io/api?module=account&action=tokentx&address=0x4e83362442b8d1bec281594cea3050c8eb01311c&startblock=0&endblock=999999999&sort=asc&apikey=YourApiKeyToken');
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState === 4 && xhr.status === 200) {
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log('ehter balance : ' + xhr.responseText);
                     document.querySelector('#transferevent').innerHTML = xhr.responseText;
                 }
@@ -75,52 +67,64 @@
 </head>
 
 <body>
-    <button class="tablink" onclick="openInformation('myBalance')" id="defaultOpen">My Balance</button>
-    <button class="tablink" onclick="openInformation('assetList')">Real State List</button>
+    <div class="container">
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" onclick="openInformation('myBalance')" id="defaultOpen">My Balance</button>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" onclick="openInformation('assetList')">Real State List</button>
+            </div>
+        </div>
 
-    <a href="/logout">log out</a>
+        <a href="/logout">log out</a>
 
-    <div id="myBalance" class="tabcontent">
-        <h3>My Balance Screen</h3>
-        <div><p id='etherbalance'></p></div>
-        <br><br>
-        <div><p id='transferevent'></p></div>
-        
-    </div>
-    <div id="assetList" class="tabcontent">
-        <h3>Real estate list</h3>
-        <div>
-            <ul>
-                <% for(var i = 0; i < assetList.length; i++) { 
+        <div id="myBalance" class="tabcontent">
+            <h3>My Balance Screen</h3>
+            <div>
+                <p id='etherbalance'></p>
+            </div>
+            <br>
+            <br>
+            <div>
+                <p id='transferevent'></p>
+            </div>
+
+        </div>
+        <div id="assetList" class="tabcontent">
+            <h3>Real estate list</h3>
+            <div>
+                <ul>
+                    <% for(var i = 0; i < assetList.length; i++) { 
                     var name = assetList[i].name;
                     var address = assetList[i].address; 
                     var lat = assetList[i].latitude;
                     var lng = assetList[i].longitude;
                     %>
-                    <li>
-                        #
-                        <%=i %> - 건물이름 :
-                            <%=name %>, 주소 :
-                                <%=address %>
-                                    <form id="form-id" method="get" action="/map">
-                                        <input type="hidden" name="name" value="<%=name %>">
-                                        <input type="hidden" name="address" value="<%=address %>">
-                                        <input type="hidden" name="lat" value="<%=lat %>">
-                                        <input type="hidden" name="lng" value="<%=lng %>">
+                        <li>
+                            #
+                            <%=i %> - 건물이름 :
+                                <%=name %>, 주소 :
+                                    <%=address %>
+                                        <form id="form-id" method="get" action="/map">
+                                            <input type="hidden" name="name" value="<%=name %>">
+                                            <input type="hidden" name="address" value="<%=address %>">
+                                            <input type="hidden" name="lat" value="<%=lat %>">
+                                            <input type="hidden" name="lng" value="<%=lng %>">
 
-                                        <button onclick="document.getElementById('form-id').submit();">지도</button>
-                                    </form>
-                    </li>
-                    <% } %>
-            </ul>
+                                            <button onclick="document.getElementById('form-id').submit();">지도</button>
+                                        </form>
+                        </li>
+                        <% } %>
+                </ul>
+            </div>
+
         </div>
 
+        <script>
+            document.getElementById("defaultOpen").click();
+        </script>
     </div>
-
-    <script>
-        document.getElementById("defaultOpen").click();
-    </script>
-
 </body>
 
 </html>
