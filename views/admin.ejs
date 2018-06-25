@@ -7,32 +7,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script>
-        function openInformation(id) {
-            var i, tabcontent;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            console.log('tabcontent length : ' + tabcontent.length);
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            document.getElementById(id).style.display = "block"
-        }
-
-
-    </script>
-
     <style>
         html,
         body {
             height: 100%;
             font-family: "Lato", sans-serif;
-        }
-
-        .tabcontent {
-            color: black;
-            display: none;
-            height: 100%;
-            text-align: center;
         }
     </style>
 
@@ -55,17 +34,18 @@
 
 <body>
     <div class="container">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" onclick="openInformation('myBalance')" id="defaultOpen">My Balance</button>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" onclick="openInformation('assetList')">Real State List</button>
-            </div>
-        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#admin">Administrator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#assets">Real Estate List</a>
+            </li>
+        </ul>
+    </div>
 
-        <div id="myBalance" class="tabcontent">
-            <h3>Admin Screen</h3>
+    <div class="tab-content">
+        <div id="admin" class="container tab-pane active">
             <form class="form-horizontal" action="#" method="get" id="admin-form-id">
                 <div class="form-group">
                     <label class="control-label col-sm-2" for="latitude">Latitude</label>
@@ -96,16 +76,17 @@
                 <input type="button" value="지도보기" onclick="button_click('map')" />
             </form>
         </div>
-        <div id="assetList" class="tabcontent">
+
+        <div id="assets" class="container tab-pane fade">
             <h3>Real estate list</h3>
             <div>
                 <ul>
                     <% for(var i = 0; i < assetList.length; i++) { 
-                    var name = assetList[i].name;
-                    var address = assetList[i].address; 
-                    var lat = assetList[i].latitude;
-                    var lng = assetList[i].longitude;
-                    %>
+                        var name = assetList[i].name;
+                        var address = assetList[i].address; 
+                        var lat = assetList[i].latitude;
+                        var lng = assetList[i].longitude;
+                        %>
                         <li>
                             #
                             <%=i %> - 건물이름 :
@@ -123,12 +104,10 @@
                         <% } %>
                 </ul>
             </div>
-
         </div>
     </div>
-    <script>
-        document.getElementById("defaultOpen").click();
-    </script>
+
+
 </body>
 
 </html>

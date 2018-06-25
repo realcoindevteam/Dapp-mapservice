@@ -13,31 +13,9 @@
             height: 100%;
             font-family: "Lato", sans-serif;
         }
-
-        .tabcontent {
-            color: black;
-            display: none;
-            height: 100%;
-            text-align: center;
-        }
     </style>
 
     <script>
-        function openInformation(id) {
-            var i, tabcontent;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            console.log('tabcontent length : ' + tabcontent.length);
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            document.getElementById(id).style.display = "block"
-
-            if (id == 'myBalance') {
-                getEtherBalance();
-                getTransferEvent();
-            }
-        }
-
         function getEtherBalance() {
             console.log('getEtherBalance call');
             var xhr = new XMLHttpRequest();
@@ -67,20 +45,21 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="btn-group btn-group-justified">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" onclick="openInformation('myBalance')" id="defaultOpen">My Balance</button>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary" onclick="openInformation('assetList')">Real State List</button>
-            </div>
-        </div>
+    <div class="container mt-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#balance">My Balance</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#assets">Real Estate List</a>
+            </li>
+        </ul>
+    </div>
 
-        <a href="/logout">log out</a>
-
-        <div id="myBalance" class="tabcontent">
-            <h3>My Balance Screen</h3>
+    <div class="tab-content">
+        <div id="balance" class="container tab-pane active">
+            <br>
+            <h3>Balance page</h3>
             <div>
                 <p id='etherbalance'></p>
             </div>
@@ -89,9 +68,13 @@
             <div>
                 <p id='transferevent'></p>
             </div>
-
+            <script>
+                getEtherBalance();
+                getTransferEvent();
+            </script>
         </div>
-        <div id="assetList" class="tabcontent">
+        <div id="assets" class="container tab-pane fade">
+            <br>
             <h3>Real estate list</h3>
             <div>
                 <ul>
@@ -118,13 +101,7 @@
                         <% } %>
                 </ul>
             </div>
-
         </div>
-
-        <script>
-            document.getElementById("defaultOpen").click();
-        </script>
-    </div>
 </body>
 
 </html>
