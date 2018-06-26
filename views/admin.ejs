@@ -17,17 +17,46 @@
 
     <script>
         function button_click(action) {
+            console.log('button_click');
             var form = document.getElementById('admin-form-id');
             if (action == 'save') {
-                //alert('save button clicked ');
-                form.action = '/saveassets';
-                form.method = 'post';
+                var name = document.getElementById('name').value;
+                var token = document.getElementById('token').value;
+                var lat = document.getElementById('latitude').value;
+                var lng = document.getElementById('longitude').value;
+
+                var data = { name: name, token: token, lat: lat, lng: lng };
+                var xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                } else if (window.ActiveXObject) {
+                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                var param = Object.keys(data).map(function (k) {
+                    return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+                }).join('&');
+                console.log('param : ' + param);
+                xhr.open('POST', '/saveassets', true);
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var obj = JSON.parse(xhr.responseText);
+                        if (obj.result == true) {
+                            alert('저장하였습니다.');
+                        } else {
+                            alert('저장 실패 : ' + obj.msg);
+                        }
+                    }
+                }
+                xhr.send(param);
             }
 
             if (action == 'map') {
                 form.action = '/map';
+                var name = document.getElementById('mapname').value;
+                console.log('map name : ' + name);
+                form.submit();
             }
-            form.submit();
         }
     </script>
 </head>
@@ -93,10 +122,10 @@
                                 <%=name %>, 주소 :
                                     <%=address %>
                                         <form id="form-id" method="get" action="/map">
-                                            <input type="hidden" name="name" value="<%=name %>">
-                                            <input type="hidden" name="address" value="<%=address %>">
-                                            <input type="hidden" name="lat" value="<%=lat %>">
-                                            <input type="hidden" name="lng" value="<%=lng %>">
+                                            <input type="hidden" name="name" id="mapname" value="<%=name %>">
+                                            <input type="hidden" name="address" id="mapaddress" value="<%=address %>">
+                                            <input type="hidden" name="lat" id="maplat" value="<%=lat %>">
+                                            <input type="hidden" name="lng" id="maplng" value="<%=lng %>">
 
                                             <button onclick="document.getElementById('form-id').submit();">지도</button>
                                         </form>
