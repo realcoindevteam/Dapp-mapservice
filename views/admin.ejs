@@ -39,7 +39,9 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var obj = JSON.parse(xhr.responseText);
                     if (obj.result == true) {
-                        alert('저장하였습니다.');
+                        if(confirm('저장하였습니다.')) {
+                            window.location.reload();
+                        }
                     } else {
                         alert('저장 실패 : ' + obj.msg);
                     }
@@ -51,6 +53,26 @@
         function moveToMap() {
             var form = document.getElementById('admin-form-id');
             form.action = '/map';
+            form.submit();
+        }
+
+        function selectasset(params) {
+            console.log('asset list index -> ' + params);
+            var obj = JSON.parse(params);
+
+            var form = document.createElement("form");
+            form.setAttribute("method", 'GET');
+            form.setAttribute("action", "/map");
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", obj[key]);
+                    form.appendChild(hiddenField);
+                }
+            }
+            document.body.appendChild(form);
             form.submit();
         }
     </script>
@@ -100,37 +122,29 @@
                 <input type="button" value="지도보기" onclick="moveToMap()" />
             </form>
         </div>
-
         <div id="assets" class="container tab-pane fade">
             <h3>Real estate list</h3>
-            <div>
-                <ul>
-                    <% for(var i = 0; i < assetList.length; i++) { 
-                        var name = assetList[i].name;
-                        var address = assetList[i].address; 
-                        var lat = assetList[i].latitude;
-                        var lng = assetList[i].longitude;
-                        %>
-                        <li>
-                            #
-                            <%=i %> - 건물이름 :
-                                <%=name %>, 주소 :
-                                    <%=address %>
-                                        <form id="form-id" method="get" action="/map">
-                                            <input type="hidden" name="name" id="mapname" value="<%=name %>">
-                                            <input type="hidden" name="address" id="mapaddress" value="<%=address %>">
-                                            <input type="hidden" name="lat" id="maplat" value="<%=lat %>">
-                                            <input type="hidden" name="lng" id="maplng" value="<%=lng %>">
-
-                                            <button onclick="document.getElementById('form-id').submit();">지도</button>
-                                        </form>
-                        </li>
-                        <% } %>
-                </ul>
+            <div class="list-group">
+                <% for(var i = 0; i < assetList.length; i++) {
+                    var name = assetList[i].name;
+                    var address = assetList[i].address;
+                    var lat = assetList[i].latitude;
+                    var lng = assetList[i].longitude;
+                    var params = JSON.stringify({name:name, address:address, lat:lat, lng:lng});
+                     %>
+                    <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">
+                            <button type="button" class="btn btn-info" onclick="selectasset('<%=params %>')">지도</button>
+                            name - <%=name %>, address - <%=address %>
+                        </h4>
+                        <p class="list-group-item-text">
+                            lat - <%=lat %>, lng - <%=lng %>
+                        </p>
+                    </a>
+                    <% } %>
             </div>
         </div>
     </div>
-
 
 </body>
 
