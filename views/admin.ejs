@@ -16,47 +16,42 @@
     </style>
 
     <script>
-        function button_click(action) {
-            console.log('button_click');
-            var form = document.getElementById('admin-form-id');
-            if (action == 'save') {
-                var name = document.getElementById('name').value;
-                var token = document.getElementById('token').value;
-                var lat = document.getElementById('latitude').value;
-                var lng = document.getElementById('longitude').value;
+        function save() {
+            var name = document.getElementById('name').value;
+            var token = document.getElementById('token').value;
+            var lat = document.getElementById('latitude').value;
+            var lng = document.getElementById('longitude').value;
 
-                var data = { name: name, token: token, lat: lat, lng: lng };
-                var xhr;
-                if (window.XMLHttpRequest) {
-                    xhr = new XMLHttpRequest();
-                } else if (window.ActiveXObject) {
-                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                var param = Object.keys(data).map(function (k) {
-                    return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
-                }).join('&');
-                console.log('param : ' + param);
-                xhr.open('POST', '/saveassets', true);
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var obj = JSON.parse(xhr.responseText);
-                        if (obj.result == true) {
-                            alert('저장하였습니다.');
-                        } else {
-                            alert('저장 실패 : ' + obj.msg);
-                        }
+            var data = { name: name, token: token, lat: lat, lng: lng };
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else if (window.ActiveXObject) {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            var param = Object.keys(data).map(function (k) {
+                return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+            }).join('&');
+            console.log('param : ' + param);
+            xhr.open('POST', '/saveassets', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var obj = JSON.parse(xhr.responseText);
+                    if (obj.result == true) {
+                        alert('저장하였습니다.');
+                    } else {
+                        alert('저장 실패 : ' + obj.msg);
                     }
                 }
-                xhr.send(param);
             }
+            xhr.send(param);
+        }
 
-            if (action == 'map') {
-                form.action = '/map';
-                var name = document.getElementById('mapname').value;
-                console.log('map name : ' + name);
-                form.submit();
-            }
+        function moveToMap() {
+            var form = document.getElementById('admin-form-id');
+            form.action = '/map';
+            form.submit();
         }
     </script>
 </head>
@@ -101,8 +96,8 @@
                     </div>
                 </div>
 
-                <input type="button" value="저장" onclick="button_click('save')" />
-                <input type="button" value="지도보기" onclick="button_click('map')" />
+                <input type="button" value="저장" onclick="save()" />
+                <input type="button" value="지도보기" onclick="moveToMap()" />
             </form>
         </div>
 
