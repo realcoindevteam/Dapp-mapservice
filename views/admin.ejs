@@ -39,7 +39,7 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var obj = JSON.parse(xhr.responseText);
                     if (obj.result == true) {
-                        if(confirm('저장하였습니다.')) {
+                        if (confirm('저장하였습니다.')) {
                             window.location.reload();
                         }
                     } else {
@@ -92,35 +92,48 @@
 
     <div class="tab-content">
         <div id="admin" class="container tab-pane active">
-            <form class="form-horizontal" action="#" method="get" id="admin-form-id">
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="latitude">Latitude</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="latitude" name="lat">
+            <div class="col-sm-8">
+                    <%  var lat;
+                        var lng;
+                    if(coordinate) {
+                        lat = coordinate.lat
+                        lng = coordinate.lng
+                    } %>
+                <form class="form-horizontal" action="#" method="get" id="admin-form-id">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="latitude">Latitude</label>
+                        <div class="col-sm-10">
+                            
+                            <input type="text" class="form-control" id="latitude" name="lat" value="<%=lat %>">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="longitude">Longitude</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="longitude" name="lng">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="longitude">Longitude</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="longitude" name="lng" value="<%=lng %>">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="token">Token</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="token" name="token">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="token">Token</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="token" name="token">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="name">Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="name" name="name">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
                     </div>
-                </div>
 
-                <input type="button" value="저장" onclick="save()" />
+                    <input type="button" value="저장" onclick="save()" />
+
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <br><br>
                 <input type="button" value="지도보기" onclick="moveToMap()" />
-            </form>
+            </div>
         </div>
         <div id="assets" class="container tab-pane fade">
             <h3>Real estate list</h3>
@@ -135,10 +148,14 @@
                     <a href="#" class="list-group-item">
                         <h4 class="list-group-item-heading">
                             <button type="button" class="btn btn-info" onclick="selectasset('<%=params %>')">지도</button>
-                            name - <%=name %>, address - <%=address %>
+                            name -
+                            <%=name %>, address -
+                                <%=address %>
                         </h4>
                         <p class="list-group-item-text">
-                            lat - <%=lat %>, lng - <%=lng %>
+                            lat -
+                            <%=lat %>, lng -
+                                <%=lng %>
                         </p>
                     </a>
                     <% } %>

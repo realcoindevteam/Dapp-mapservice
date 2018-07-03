@@ -48,6 +48,11 @@ module.exports = function (router, passport) {
         var paramAddress = req.query.address;
         var paramLat = req.query.lat;
         var paramLng = req.query.lng;
+
+        if (!paramLat || !paramLng) {
+            paramLat = 37.5326;
+            paramLng = 127.024612;
+        }
         console.log('/map called  :' + paramName + ', ' + paramAddress + ', ' + paramLat + ', ' + paramLng);
         res.render('map.ejs', { name: paramName, address: paramAddress, lat: paramLat, lng: paramLng });
     });
@@ -117,6 +122,8 @@ module.exports = function (router, passport) {
         console.log('req.user instance');
         // console.dir(req.user);
 
+
+
         if (!req.user) {
             console.log('사용자 인증 안된 상태임.');
             res.redirect('/login');
@@ -126,6 +133,18 @@ module.exports = function (router, passport) {
             var userInfo;
             //var assetList = mockupData.assetList;
             var tablename = 'assets';
+
+            var paramLat = req.body.lat || req.query.lat;
+            var paramLng = req.body.lng || req.query.lng;
+
+            console.log('profile lat -> ' + paramLat + ', lng -> ' + paramLng);
+            var coordinate = {lat: paramLat, lng: paramLng};
+            var isSetCoordinate = false;
+            // if(paramLat && paramLng) {
+            //     isSetCoordinate = true;
+            //     res.render('admin.ejs', { coordinate: coordinate });
+            //     return;
+            // }
 
             var pool = req.app.get('pool');
 
@@ -159,7 +178,7 @@ module.exports = function (router, passport) {
                             console.dir(req.user[0]);
                             userInfo = req.user[0];
                             //res.render('profile.ejs', { assetList: assetList });
-                            res.render('admin.ejs', { assetList: assetList });
+                            res.render('admin.ejs', { assetList: assetList, coordinate: coordinate});
                         } else {
                             console.log('user is not array');
                             console.dir(req.user);
