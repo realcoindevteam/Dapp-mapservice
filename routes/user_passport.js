@@ -80,12 +80,15 @@ module.exports = function (router, passport) {
             var paramToken = req.body.token;
             var paramLat = req.body.lat;
             var paramLng = req.body.lng;
+            var paramAddress = req.body.address;
+            var paramPrice = req.body.price;
 
-            console.log('save value name -> ' + paramName + ', token -> ' + paramToken + ', lat -> ' + paramLat + ', lng -> ' + paramLng);
+            console.log('save value name -> ' + paramName + ', token -> ' + paramToken + ', lat -> ' + paramLat + ', lng -> ' + paramLng
+                    + ', address -> ' + paramAddress + ', price -> ' + paramPrice);
 
             var pool = req.app.get('pool');
 
-            if (!paramName || !paramToken || !paramLat || !paramLng) {
+            if (!paramName || !paramToken || !paramLat || !paramLng || !paramAddress || !paramPrice) {
                 res.send({ result: false, msg: '모든 항목을 입력하세요.' });
                 return;
             }
@@ -99,8 +102,8 @@ module.exports = function (router, passport) {
                     return;
                 }
 
-                var data = { name: paramName, token: paramToken, latitude: paramLat, longitude: paramLng };
-                var exec = conn.query('insert into assets set ?', data, function (err, result) {
+                var data = { name: paramName, token: paramToken, latitude: paramLat, longitude: paramLng, address: paramAddress, price: paramPrice };
+                var exec = conn.query('insert into assets2 set ?', data, function (err, result) {
                     conn.release();
 
                     if (err) {
@@ -155,7 +158,7 @@ module.exports = function (router, passport) {
                     return;
                 }
 
-                var exec = conn.query("select * from assets", [],
+                var exec = conn.query("select * from assets2", [],
                     function (err, rows) {
                         conn.release();
 
@@ -169,19 +172,19 @@ module.exports = function (router, passport) {
                         var assetList = rows;
 
                         for (var i = 0; i < assetList.length; i++) {
-                            //         console.log('#' + i + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
-                            console.dir(assetList[i]);
+                                     console.log('#' + i + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
+                           // console.dir(assetList[i]);
                         }
 
                         if (Array.isArray(req.user)) {
                             console.log('user is array');
-                            console.dir(req.user[0]);
+                           // console.dir(req.user[0]);
                             userInfo = req.user[0];
                             //res.render('profile.ejs', { assetList: assetList });
                             res.render('admin.ejs', { assetList: assetList, coordinate: coordinate});
                         } else {
                             console.log('user is not array');
-                            console.dir(req.user);
+                          //  console.dir(req.user);
                             userInfo = req.user;
                             //res.render('profile.ejs', { user: req.user });
                         }

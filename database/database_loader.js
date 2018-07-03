@@ -24,14 +24,15 @@ database.init = function(app, config) {
             return;
         }
 
-        let createAssets = 'CREATE TABLE IF NOT EXISTS assets('
+        let createAssets = 'CREATE TABLE IF NOT EXISTS assets2('
             + 'id INT NOT NULL AUTO_INCREMENT,'
             + 'PRIMARY KEY(id),'
             + 'name VARCHAR(30),'
             + 'address VARCHAR(255),'
             + 'token VARCHAR(255),'
             + 'latitude DECIMAL(9,6),'
-            + 'longitude DECIMAL(9,6)'
+            + 'longitude DECIMAL(9,6),'
+            + 'price VARCHAR(255)'
             + ')';
 
         conn.query(createAssets, function(err) {
