@@ -24,7 +24,7 @@
             var address = document.getElementById('address').value;
             var price = document.getElementById('price').value;
 
-            var data = { name: name, token: token, lat: lat, lng: lng, address: address, price:price };
+            var data = { name: name, token: token, lat: lat, lng: lng, address: address, price: price };
             var xhr;
             if (window.XMLHttpRequest) {
                 xhr = new XMLHttpRequest();
@@ -94,7 +94,9 @@
 
     <div class="tab-content">
         <div id="admin" class="container tab-pane active">
+            <br>
             <div class="col-sm-8">
+                
                 <%  var lat;
                         var lng;
                     if(coordinate) {
@@ -134,20 +136,22 @@
                             </div>
                         </div>
                         <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Price</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="price" name="price">
-                                </div>
+                            <label class="control-label col-sm-2" for="name">Price</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="price" name="price">
                             </div>
+                        </div>
 
-                        <input type="button" value="저장" onclick="save()" />
+                        <br>
+                        <br>
+                        <button type="button" class="btn btn-primary pull-right col-xs-2" onclick="save()">저장</button>
 
                     </form>
             </div>
             <div class="col-sm-4">
                 <br>
                 <br>
-                <input type="button" value="지도보기" onclick="moveToMap()" />
+                <button type="button" class="btn btn-primary center-block" onclick="moveToMap()" >지도보기</button>
             </div>
         </div>
         <div id="assets" class="container tab-pane fade">
