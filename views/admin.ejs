@@ -58,6 +58,14 @@
             form.submit();
         }
 
+        function logout() {
+            var form = document.createElement("form");
+            form.setAttribute("method", "GET");
+            form.setAttribute("action", "/logout");
+            document.body.appendChild(form);
+            form.submit();
+        }
+
         function selectasset(params) {
             console.log('asset list index -> ' + params);
             var obj = JSON.parse(params);
@@ -152,6 +160,8 @@
                 <br>
                 <br>
                 <button type="button" class="btn btn-primary center-block" onclick="moveToMap()" >지도보기</button>
+                <br>
+                <button type="button" class="btn btn-primary center-block" onclick="logout()">로그아웃</button>
             </div>
         </div>
         <div id="assets" class="container tab-pane fade">
