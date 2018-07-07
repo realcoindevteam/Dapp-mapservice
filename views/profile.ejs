@@ -2,11 +2,17 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Administrator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" href="theme/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/css/ionicons.min.css">
+    <link rel="stylesheet" href="theme/css/admin.min.css">
+    <link rel="stylesheet" href="theme/css/skins/_all-skins.min.css">
     <style>
         html,
         body {
@@ -41,67 +47,108 @@
             }
             xhr.send();
         }
+
+        function selectasset(params) {
+            console.log('asset list index -> ' + params);
+            var obj = JSON.parse(params);
+
+            var form = document.createElement("form");
+            form.setAttribute("method", 'GET');
+            form.setAttribute("action", "/map");
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", obj[key]);
+                    form.appendChild(hiddenField);
+                }
+            }
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 </head>
 
-<body>
-    <div class="container mt-3">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#balance">My Balance</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#assets">Real Estate List</a>
-            </li>
-        </ul>
+<body class="hold-transition skin-blue sidebar-mini bg-gray">
+    <div class="container">
+        <br>
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#balance" class="nav-link active" data-toggle="tab">Administrator</a>
+                </li>
+                <li>
+                    <a href="#assets" data-toggle="tab">Real Estate List</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="balance" class="container tab-pane active">
+
+                
+                    <br>
+                    <h3>Balance page</h3>
+                    <div>
+                        <p id='etherbalance'></p>
+                    </div>
+                    <br>
+                    <br>
+                    <div>
+                        <p id='transferevent'></p>
+                    </div>
+                    <script>
+                        getEtherBalance();
+                        getTransferEvent();
+                    </script>
+                    
+                   
+
+
+                </div>
+
+                <div id="assets" class="container tab-pane fade">
+                    <div class="col-sm-10">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Token</th>
+                                        <th>price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i = 0; i < assetList.length; i++) {
+                                        var name = assetList[i].name;
+                                        var address = assetList[i].address;
+                                        var token = assetList[i].token;
+                                        var price = assetList[i].price;
+                                        var lat = assetList[i].latitude;
+                                        var lng = assetList[i].longitude;
+                                        var params = JSON.stringify({name:name, address:address, lat:lat, lng:lng});
+                                         %>
+                                    <tr>
+                                        <td><%=name %></td>
+                                        <td><%=address %></td>
+                                        <td><%=token %></td>
+                                        <td><%=price %></td>
+                                        <td>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=params %>')">
+                                                <i class="fa fa-map-marker"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-
-    <div class="tab-content">
-        <div id="balance" class="container tab-pane active">
-            <br>
-            <h3>Balance page</h3>
-            <div>
-                <p id='etherbalance'></p>
-            </div>
-            <br>
-            <br>
-            <div>
-                <p id='transferevent'></p>
-            </div>
-            <script>
-                getEtherBalance();
-                getTransferEvent();
-            </script>
-        </div>
-        <div id="assets" class="container tab-pane fade">
-            <br>
-            <h3>Real estate list</h3>
-            <div>
-                <ul>
-                    <% for(var i = 0; i < assetList.length; i++) { 
-                    var name = assetList[i].name;
-                    var address = assetList[i].address; 
-                    var lat = assetList[i].latitude;
-                    var lng = assetList[i].longitude;
-                    %>
-                        <li>
-                            #
-                            <%=i %> - 건물이름 :
-                                <%=name %>, 주소 :
-                                    <%=address %>
-                                        <form id="form-id" method="get" action="/map">
-                                            <input type="hidden" name="name" value="<%=name %>">
-                                            <input type="hidden" name="address" value="<%=address %>">
-                                            <input type="hidden" name="lat" value="<%=lat %>">
-                                            <input type="hidden" name="lng" value="<%=lng %>">
-
-                                            <button onclick="document.getElementById('form-id').submit();">지도</button>
-                                        </form>
-                        </li>
-                        <% } %>
-                </ul>
-            </div>
-        </div>
 </body>
 
 </html>
