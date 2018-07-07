@@ -168,33 +168,47 @@
                     </div>
 
                 </div>
-                <div id="assets" class="container tab-pane fade">
-                    <h3>Real estate list</h3>
-                    <div class="list-group">
-                            <% for(var i = 0; i < assetList.length; i++) {
-                                var name = assetList[i].name;
-                                var address = assetList[i].address;
-                                var lat = assetList[i].latitude;
-                                var lng = assetList[i].longitude;
-                                var params = JSON.stringify({name:name, address:address, lat:lat, lng:lng});
-                                 %>
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">
-                                <button type="button" class="btn btn-info" onclick="selectasset('<%=params %>')">지도</button>
-                                name - 
-                                <%=name %>, address -
-                                <%=address %>
-                            </h4>
-                            <p class="list-group-item-text">
-                                    lat -
-                                    <%=lat %>, lng -
-                                        <%=lng %>
 
-                            </p>
-                        </a>
-                        <% } %>
+                <div id="assets" class="container tab-pane fade">
+                    <div class="col-sm-10">
+                        <div class="table-responsive">
+                            <table class="table no-margin">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Token</th>
+                                        <th>price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i = 0; i < assetList.length; i++) {
+                                        var name = assetList[i].name;
+                                        var address = assetList[i].address;
+                                        var token = assetList[i].token;
+                                        var price = assetList[i].price;
+                                        var lat = assetList[i].latitude;
+                                        var lng = assetList[i].longitude;
+                                        var params = JSON.stringify({name:name, address:address, lat:lat, lng:lng});
+                                         %>
+                                    <tr>
+                                        <td><%=name %></td>
+                                        <td><%=address %></td>
+                                        <td><%=token %></td>
+                                        <td><%=price %></td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-sm" onclick="selectasset('<%=params %>')">
+                                                <i class="fa fa-map-marker"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>
