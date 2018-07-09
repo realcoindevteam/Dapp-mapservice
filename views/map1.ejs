@@ -50,6 +50,9 @@
             form.submit();
         }
 
+        var map;
+        var markers = [];
+
         function initMap() {
             // Map options
             var paramLat = <%=lat %>;
@@ -60,20 +63,48 @@
             }
 
             // New map
-            var map = new google.maps.Map(document.getElementById('map'), options);
+            map = new google.maps.Map(document.getElementById('map'), options);
 
             map.addListener('click', function (event) {
-                placeMarker(map, event.latLng);
+               // placeMarker(map, event.latLng);
                 console.log('click -> ' + event.latLng);
                 document.querySelector('#curlat').innerHTML = event.latLng.lat();
                 document.querySelector('#curlng').innerHTML = event.latLng.lng();
                 gLat = event.latLng.lat();
                 gLng = event.latLng.lng();
+                deleteMarkers();
+                addMarker(event.latLng);
+                showMarkers();
                 // document.querySelector('#coordinate').innerHTML = event.latLng.lat();
                 // document.querySelector('#coordinate1').innerHTML = event.latLng.lng();
             });
+        }
 
-            
+        function addMarker(location) {
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+            markers.push(marker);
+        }
+
+        function setMapOnAll(map) {
+            for(var i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+
+        function showMarkers() {
+            setMapOnAll(map);
+        }
+
+        function deleteMarkers() {
+            clearMarkers();
+            markers = [];
         }
 
         function placeMarker(map, location) {
@@ -91,10 +122,10 @@
             <div class="box-header with-border">
                 <div class="pull-right box-tools">
                     <button type="button" class="btn" data-widget="back" onclick="back()">
-                        <i class="fa fa-list"></i>
+                        <i class="fa fa-edit"></i>
                     </button>
                 </div>
-                <i class="fa fa-calendar"></i>
+                <i class="fa fa-map-marker"></i>
                 <h3 class="box-title">Asset</h3>
             </div>
 
