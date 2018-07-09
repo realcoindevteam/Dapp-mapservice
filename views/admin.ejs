@@ -53,7 +53,7 @@
 
         function moveToMap() {
             var form = document.getElementById('admin-form-id');
-            form.action = '/map';
+            form.action = '/map1';
             form.submit();
         }
 
@@ -88,6 +88,18 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini bg-gray">
+    <script>
+        var defaultPage = <%=defaultPage %>;
+        $(document).ready(function() {
+            
+            console.log('default -> ' + defaultPage);
+            if(defaultPage == 1) {
+                $('.nav-tabs a[href="#admin"]').tab('show')
+            } else if(defaultPage == 2) {
+                $('.nav-tabs a[href="#assets"]').tab('show')
+            }
+        });
+    </script>
     <div class="container">
         <br>
         <div class="nav-tabs-custom">

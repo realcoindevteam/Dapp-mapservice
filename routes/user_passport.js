@@ -43,6 +43,10 @@ module.exports = function (router, passport) {
         failureFlash: true
     }));
 
+    router.route('/map1').get(function (req, res) {
+        res.render('map1.ejs', {lat:37.532102, lng:127.024440});
+    });
+
     router.route('/map').get(function (req, res) {
         var paramName = req.query.name;
         var paramAddress = req.query.address;
@@ -125,7 +129,8 @@ module.exports = function (router, passport) {
         console.log('req.user instance');
         // console.dir(req.user);
 
-
+        var defaultPage = req.body.default || req.query.default;
+        console.log('default page -> ' + defaultPage);
 
         if (!req.user) {
             console.log('사용자 인증 안된 상태임.');
@@ -181,7 +186,7 @@ module.exports = function (router, passport) {
                            // console.dir(req.user[0]);
                             userInfo = req.user[0];
                             //res.render('profile.ejs', { assetList: assetList });
-                            res.render('admin.ejs', { assetList: assetList, coordinate: coordinate});
+                            res.render('admin.ejs', { defaultPage:defaultPage, assetList: assetList, coordinate: coordinate});
                         } else {
                             console.log('user is not array');
                           //  console.dir(req.user);
