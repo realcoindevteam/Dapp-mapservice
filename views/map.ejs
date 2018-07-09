@@ -2,32 +2,27 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <link rel="stylesheet" href="theme/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/css/ionicons.min.css">
+    <link rel="stylesheet" href="theme/css/admin.min.css">
+    <link rel="stylesheet" href="theme/css/skins/_all-skins.min.css">
     <meta http-equiv="X-UA_Compatible" content="ie=edge">
-    <title>Google Map Test</title>
-    <style>
-        html,
-        body {
-            height: 100%;
-            font-family: "Lato", sans-serif;
-        }
 
-        #map {
-            height: 90%;
-            width: 100%;
-        }
-    </style>
     <script>
+        var gLat;
+        var gLng;
         function back() {
             var lat = document.querySelector('#curlat').innerHTML;
             var lng = document.querySelector('#curlng').innerHTML;
 
-            console.log('func back() lat -> ' + lat + ', lng -> ' + lng);
+            console.log('func back() lat -> ' + gLat + ', lng -> ' + gLng);
             var form = document.createElement("form");
             form.setAttribute("method", 'GET');
             form.setAttribute("action", "/profile");
@@ -35,49 +30,19 @@
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", "lat");
-            hiddenField.setAttribute("value", lat);
+            hiddenField.setAttribute("value", gLat);
             form.appendChild(hiddenField);
 
             var hiddenField1 = document.createElement("input");
             hiddenField1.setAttribute("type", "hidden");
             hiddenField1.setAttribute("name", "lng");
-            hiddenField1.setAttribute("value", lng);
+            hiddenField1.setAttribute("value", gLng);
             form.appendChild(hiddenField1);
             document.body.appendChild(form);
 
             form.submit();
         }
-    </script>
 
-
-</head>
-
-<body>
-    <div class="container">
-        <h1>Map</h1>
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-sm-2">latitude:</div>
-                    <div class="col-sm-2" id="curlat"></div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-sm-2">latitude:</div>
-                    <div class="col-sm-2" id="curlng"></div>
-                </div>
-            </div>
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-primary" onclick="back()">뒤로가기</button>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div id="map"></div>
-
-
-    <script>
         function initMap() {
             // Map options
             var paramLat = <%=lat %>;
@@ -87,7 +52,6 @@
                 center: { lat: paramLat, lng: paramLng }
             }
 
-
             // New map
             var map = new google.maps.Map(document.getElementById('map'), options);
 
@@ -96,6 +60,10 @@
                 console.log('click -> ' + event.latLng);
                 document.querySelector('#curlat').innerHTML = event.latLng.lat();
                 document.querySelector('#curlng').innerHTML = event.latLng.lng();
+                gLat = event.latLng.lat();
+                gLng = event.latLng.lng();
+                // document.querySelector('#coordinate').innerHTML = event.latLng.lat();
+                // document.querySelector('#coordinate1').innerHTML = event.latLng.lng();
             });
 
             // Add marker
@@ -120,6 +88,43 @@
             map.setCenter(location);
         }
     </script>
+</head>
+
+<body class="bg-gray">
+    <div class="container">
+        <br>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn" data-widget="back" onclick="back()">
+                        <i class="fa fa-list"></i>
+                    </button>
+                </div>
+                <i class="fa fa-calendar"></i>
+                <h3 class="box-title">Asset</h3>
+            </div>
+
+            <input type="hidden" id="curlat">
+            <input type="hidden" id="curlng">
+
+            <div class="row">
+
+                <div class="col-sm-2">
+                    <p id="curlat"> </p>
+                </div>
+                <div class="col-sm-2">
+                    <p id="curlng"> </p>
+                </div>
+            </div>
+
+            <div class="box-body no-padding">
+                <div class="pad">
+                    <div id="map" style="height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscU4engo1Mwz73WPUNtQHUx6nXVg5nwE&callback=initMap">
     </script>
 </body>
