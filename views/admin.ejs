@@ -65,22 +65,26 @@
             form.submit();
         }
 
-        function selectasset(params) {
-            console.log('asset list index -> ' + params);
-            var obj = JSON.parse(params);
-
+        function selectasset(id) {
+            console.log('asset list id -> ' + id);
+            //var obj = JSON.parse(params);
             var form = document.createElement("form");
             form.setAttribute("method", 'GET');
             form.setAttribute("action", "/map");
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", key);
-                    hiddenField.setAttribute("value", obj[key]);
-                    form.appendChild(hiddenField);
-                }
-            }
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "id");
+            hiddenField.setAttribute("value", id);
+            form.appendChild(hiddenField);
+            // for (var key in obj) {
+            //     if (obj.hasOwnProperty(key)) {
+            //         var hiddenField = document.createElement("input");
+            //         hiddenField.setAttribute("type", "hidden");
+            //         hiddenField.setAttribute("name", key);
+            //         hiddenField.setAttribute("value", obj[key]);
+            //         form.appendChild(hiddenField);
+            //     }
+            // }
             document.body.appendChild(form);
             form.submit();
         }
@@ -195,13 +199,13 @@
                                 </thead>
                                 <tbody>
                                     <% for(var i = 0; i < assetList.length; i++) {
+                                        var id = assetList[i].id;
                                         var name = assetList[i].name;
                                         var address = assetList[i].address;
                                         var token = assetList[i].token;
                                         var price = assetList[i].price;
                                         var lat = assetList[i].latitude;
                                         var lng = assetList[i].longitude;
-                                        var params = JSON.stringify({name:name, address:address, lat:lat, lng:lng});
                                          %>
                                     <tr>
                                         <td><%=name %></td>
@@ -209,7 +213,7 @@
                                         <td><%=token %></td>
                                         <td><%=price %></td>
                                         <td>
-                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=params %>')">
+                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
                                                 <i class="fa fa-map-marker"></i>
                                             </button>
                                         </td>

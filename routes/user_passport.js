@@ -44,21 +44,56 @@ module.exports = function (router, passport) {
     }));
 
     router.route('/map1').get(function (req, res) {
-        res.render('map1.ejs', {lat:37.532102, lng:127.024440});
+        res.render('map1.ejs', { lat: 37.532102, lng: 127.024440 });
     });
 
     router.route('/map').get(function (req, res) {
-        var paramName = req.query.name;
-        var paramAddress = req.query.address;
-        var paramLat = req.query.lat;
-        var paramLng = req.query.lng;
+        console.log('/map route called ');
+        var paramId = req.body.id || req.query.id;
+        console.log('id -> ' + paramId);
+        
+        var pool = req.app.get('pool');
+        pool.getConnection(function (err, conn) {
+            if (err) {
+                conn.release();
+                console.log('get profile connection error');
+                return;
+            }
 
-        if (!paramLat || !paramLng) {
-            paramLat = 37.5326;
-            paramLng = 127.024612;
-        }
-        console.log('/map called  :' + paramName + ', ' + paramAddress + ', ' + paramLat + ', ' + paramLng);
-        res.render('map.ejs', { name: paramName, address: paramAddress, lat: paramLat, lng: paramLng });
+            var exec = conn.query("select * from assets2", [],
+                function (err, rows) {
+                    conn.release();
+
+                    if (err) {
+                        console.log('select assets error');
+                        return;
+                    }
+
+                    console.log('실행된 SQL -> ' + exec.sql);
+                    var assetList = rows;
+
+                    // for (var i = 0; i < assetList.length; i++) {
+                    //     console.log('#' + assetList[i].id + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
+                    //     // console.dir(assetList[i]);
+                    // }
+                    console.log('after stringify');
+                    console.dir(assetList);
+
+                    if (Array.isArray(req.user)) {
+                        console.log('user is array');
+                        // console.dir(req.user[0]);
+                        userInfo = req.user[0];
+                        res.render('map.ejs', { id:paramId, assetList:assetList });
+                    } else {
+                        console.log('user is not array');
+                        //  console.dir(req.user);
+                        userInfo = req.user;
+                        //res.render('profile.ejs', { user: req.user });
+                    }
+                });
+
+        });
+
     });
 
     router.route('/saveassets1').post(function (req, res) {
@@ -88,7 +123,7 @@ module.exports = function (router, passport) {
             var paramPrice = req.body.price;
 
             console.log('save value name -> ' + paramName + ', token -> ' + paramToken + ', lat -> ' + paramLat + ', lng -> ' + paramLng
-                    + ', address -> ' + paramAddress + ', price -> ' + paramPrice);
+                + ', address -> ' + paramAddress + ', price -> ' + paramPrice);
 
             var pool = req.app.get('pool');
 
@@ -146,7 +181,7 @@ module.exports = function (router, passport) {
             var paramLng = req.body.lng || req.query.lng;
 
             console.log('profile lat -> ' + paramLat + ', lng -> ' + paramLng);
-            var coordinate = {lat: paramLat, lng: paramLng};
+            var coordinate = { lat: paramLat, lng: paramLng };
             var isSetCoordinate = false;
             // if(paramLat && paramLng) {
             //     isSetCoordinate = true;
@@ -177,19 +212,19 @@ module.exports = function (router, passport) {
                         var assetList = rows;
 
                         for (var i = 0; i < assetList.length; i++) {
-                                     console.log('#' + i + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
-                           // console.dir(assetList[i]);
+                            console.log('#' + assetList[i].id + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
+                            // console.dir(assetList[i]);
                         }
 
                         if (Array.isArray(req.user)) {
                             console.log('user is array');
-                           // console.dir(req.user[0]);
+                            // console.dir(req.user[0]);
                             userInfo = req.user[0];
                             //res.render('profile.ejs', { assetList: assetList });
-                            res.render('admin.ejs', { defaultPage:defaultPage, assetList: assetList, coordinate: coordinate});
+                            res.render('admin.ejs', { defaultPage: defaultPage, assetList: assetList, coordinate: coordinate });
                         } else {
                             console.log('user is not array');
-                          //  console.dir(req.user);
+                            //  console.dir(req.user);
                             userInfo = req.user;
                             //res.render('profile.ejs', { user: req.user });
                         }

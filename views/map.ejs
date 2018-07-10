@@ -50,10 +50,29 @@
             form.submit();
         }
 
+        var assetList = <%- JSON.stringify(assetList); %>;
+
+        function getIndexById(id) {
+            for(var i = 0; i < assetList.length; i++) {
+                if(assetList[i].id == id) {
+                    return i;
+                }
+            }
+            return -1;
+        }
         function initMap() {
             // Map options
-            var paramLat = <%=lat %>;
-            var paramLng = <%=lng %>;
+            
+            var id = <%=id %>;
+            console.log('initMap id -> ' + id);
+           var index = getIndexById(id);
+          
+            console.log("initMap index -> " + index);
+            var paramLat = assetList[index].latitude;
+            var paramLng = assetList[index].longitude;
+            var paramName = assetList[index].name;
+            var paramAddr = assetList[index].address;
+
             var options = {
                 zoom: 13,
                 center: { lat: paramLat, lng: paramLng }
@@ -63,14 +82,11 @@
             var map = new google.maps.Map(document.getElementById('map'), options);
 
             map.addListener('click', function (event) {
-       //         placeMarker(map, event.latLng);
                 console.log('click -> ' + event.latLng);
                 document.querySelector('#curlat').innerHTML = event.latLng.lat();
                 document.querySelector('#curlng').innerHTML = event.latLng.lng();
                 gLat = event.latLng.lat();
                 gLng = event.latLng.lng();
-                // document.querySelector('#coordinate').innerHTML = event.latLng.lat();
-                // document.querySelector('#coordinate1').innerHTML = event.latLng.lng();
             });
 
             // Add marker
@@ -81,7 +97,7 @@
             });
 
             var infoWindow = new google.maps.InfoWindow({
-                content: '<h1><%=name %>, <%=address %></h1>'
+                content: '<h1>' + paramName + ', ' + paramAddr + '</h1>'
             });
 
             marker.addListener('click', function () {
@@ -89,11 +105,6 @@
             });
         }
 
-        function placeMarker(map, location) {
-            // var clickedLocation = new google.maps.LatLng(location);
-            // var marker = new google.maps.Marker({ position: location, map: map });
-            map.setCenter(location);
-        }
     </script>
 </head>
 
@@ -132,6 +143,7 @@
         </div>
     </div>
 
+    
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDscU4engo1Mwz73WPUNtQHUx6nXVg5nwE&callback=initMap">
     </script>
 </body>
