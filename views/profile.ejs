@@ -13,13 +13,6 @@
     <link rel="stylesheet" href="theme/css/ionicons.min.css">
     <link rel="stylesheet" href="theme/css/admin.min.css">
     <link rel="stylesheet" href="theme/css/skins/_all-skins.min.css">
-    <style>
-        html,
-        body {
-            height: 100%;
-            font-family: "Lato", sans-serif;
-        }
-    </style>
 
     <script>
         function getEtherBalance() {
@@ -48,22 +41,26 @@
             xhr.send();
         }
 
-        function selectasset(params) {
-            console.log('asset list index -> ' + params);
-            var obj = JSON.parse(params);
 
+
+        function logout() {
+            var form = document.createElement("form");
+            form.setAttribute("method", "GET");
+            form.setAttribute("action", "/logout");
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function selectasset(id) {
+            console.log('asset list id -> ' + id);
             var form = document.createElement("form");
             form.setAttribute("method", 'GET');
             form.setAttribute("action", "/map");
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", key);
-                    hiddenField.setAttribute("value", obj[key]);
-                    form.appendChild(hiddenField);
-                }
-            }
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "id");
+            hiddenField.setAttribute("value", id);
+            form.appendChild(hiddenField);
             document.body.appendChild(form);
             form.submit();
         }
@@ -71,12 +68,27 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini bg-gray">
+    <script>
+        var defaultPage = <%=defaultPage %>;
+        if (!defaultPage) {
+            defaultPage = 1;
+        }
+        $(document).ready(function () {
+
+            console.log('default -> ' + defaultPage);
+            if (defaultPage == 1) {
+                $('.nav-tabs a[href="#admin"]').tab('show')
+            } else if (defaultPage == 2) {
+                $('.nav-tabs a[href="#assets"]').tab('show')
+            }
+        });
+    </script>
     <div class="container">
         <br>
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#balance" class="nav-link active" data-toggle="tab">Administrator</a>
+                    <a href="#balance" class="nav-link active" data-toggle="tab">My Balance</a>
                 </li>
                 <li>
                     <a href="#assets" data-toggle="tab">Real Estate List</a>
@@ -84,66 +96,68 @@
             </ul>
             <div class="tab-content">
                 <div id="balance" class="container tab-pane active">
-
-                
                     <br>
                     <h3>Balance page</h3>
-                    <div>
-                        <p id='etherbalance'></p>
+                    <div >
+                        <p class="col-sm-8" id='etherbalance'></p>
                     </div>
                     <br>
                     <br>
-                    <div>
+                    <div class="col-sm-8">
                         <p id='transferevent'></p>
                     </div>
                     <script>
                         getEtherBalance();
                         getTransferEvent();
                     </script>
-                    
-                   
-
-
                 </div>
 
-                <div id="assets" class="container tab-pane fade">
-                    <div class="col-sm-10">
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Token</th>
-                                        <th>price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for(var i = 0; i < assetList.length; i++) {
+                <div id="assets" class="tab-pane fade">
+
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Token</th>
+                                    <th>price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i = 0; i < assetList.length; i++) {
+                                        var id = assetList[i].id;
                                         var name = assetList[i].name;
                                         var address = assetList[i].address;
                                         var token = assetList[i].token;
                                         var price = assetList[i].price;
                                         var lat = assetList[i].latitude;
                                         var lng = assetList[i].longitude;
-                                        var params = JSON.stringify({name:name, address:address, lat:lat, lng:lng});
                                          %>
                                     <tr>
-                                        <td><%=name %></td>
-                                        <td><%=address %></td>
-                                        <td><%=token %></td>
-                                        <td><%=price %></td>
                                         <td>
-                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=params %>')">
+                                            <%=name %>
+                                        </td>
+                                        <td>
+                                            <%=address %>
+                                        </td>
+                                        <td>
+                                            <%=token %>
+                                        </td>
+                                        <td>
+                                            <%=price %>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
                                                 <i class="fa fa-map-marker"></i>
                                             </button>
                                         </td>
                                     </tr>
                                     <% } %>
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
+
                 </div>
 
             </div>

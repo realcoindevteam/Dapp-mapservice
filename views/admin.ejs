@@ -67,7 +67,6 @@
 
         function selectasset(id) {
             console.log('asset list id -> ' + id);
-            //var obj = JSON.parse(params);
             var form = document.createElement("form");
             form.setAttribute("method", 'GET');
             form.setAttribute("action", "/map");
@@ -76,15 +75,6 @@
             hiddenField.setAttribute("name", "id");
             hiddenField.setAttribute("value", id);
             form.appendChild(hiddenField);
-            // for (var key in obj) {
-            //     if (obj.hasOwnProperty(key)) {
-            //         var hiddenField = document.createElement("input");
-            //         hiddenField.setAttribute("type", "hidden");
-            //         hiddenField.setAttribute("name", key);
-            //         hiddenField.setAttribute("value", obj[key]);
-            //         form.appendChild(hiddenField);
-            //     }
-            // }
             document.body.appendChild(form);
             form.submit();
         }
@@ -94,15 +84,14 @@
 <body class="hold-transition skin-blue sidebar-mini bg-gray">
     <script>
         var defaultPage = <%=defaultPage %>;
-        if(!defaultPage) {
+        if (!defaultPage) {
             defaultPage = 1;
         }
-        $(document).ready(function() {
-            
+        $(document).ready(function () {
             console.log('default -> ' + defaultPage);
-            if(defaultPage == 1) {
+            if (defaultPage == 1) {
                 $('.nav-tabs a[href="#admin"]').tab('show')
-            } else if(defaultPage == 2) {
+            } else if (defaultPage == 2) {
                 $('.nav-tabs a[href="#assets"]').tab('show')
             }
         });
@@ -120,88 +109,86 @@
             </ul>
             <div class="tab-content">
                 <div id="admin" class="container tab-pane active">
-
-                    <div class="col-sm-6">
-                        <h4 class="box-title">Asset info</h4>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-5">
+                        <h4 class="box-title">Asset Info</h4>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-5">
                         <button type="button" class="btn btn-light pull-right" style="color:gray;" onclick="logout()">logout</button>
                     </div>
 
                     <br>
                     <br>
-
-                    <div class="col-sm-8">
-                            <%  var lat;
+                    <br>
+                    <div class="col-sm-11">
+                        <%  var lat;
                             var lng;
                         if(coordinate) {
                             lat = coordinate.lat
                             lng = coordinate.lng
                         } %>
-                        <form class="form-horizontal" action="#" method="get" id="admin-form-id">
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="latitude">Latitude</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="latitude" name="lat" value="<%=lat %>">
+                            <form class="form-horizontal" action="#" method="get" id="admin-form-id">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="latitude">Latitude</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="latitude" name="lat" value="<%=lat %>">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="longitude">Longitude</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="longitude" name="lng" value="<%=lng %>">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="longitude">Longitude</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="longitude" name="lng" value="<%=lng %>">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="token">Token</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="token" name="token">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="token">Token</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="token" name="token">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Name</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="name" name="name">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="name">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="name" name="name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Address</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="address" name="address">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="name">Address</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="address" name="address">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-2" for="name">Price</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="price" name="price">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="name">Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="price" name="price">
+                                    </div>
                                 </div>
-                            </div>
-                            <br>
-                            <button type="button" class="btn btn-primary pull-right col-xs-2" onclick="save()">저장</button>
+                                <br>
+                                <button type="button" class="btn btn-primary pull-right col-xs-2" onclick="save()">저장</button>
+                                <button type="button" class="btn btn-info pull-right btn-sm" style="margin-right:20px;" onclick="moveToMap()">
+                                    <i class="fa fa-map-marker"></i>
+                                </button>
 
-                        </form>
-                    </div>
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-info btn-sm" onclick="moveToMap()">
-                            <i class="fa fa-map-marker"></i>
-                        </button>
+                            </form>
                     </div>
 
                 </div>
 
-                <div id="assets" class="container tab-pane fade">
-                    <div class="col-sm-10">
-                        <div class="table-responsive">
-                            <table class="table no-margin">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Token</th>
-                                        <th>price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for(var i = 0; i < assetList.length; i++) {
+                <div id="assets" class="tab-pane fade">
+
+                    <div class="table-responsive">
+                        <table class="table no-margin">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Token</th>
+                                    <th>price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i = 0; i < assetList.length; i++) {
                                         var id = assetList[i].id;
                                         var name = assetList[i].name;
                                         var address = assetList[i].address;
@@ -211,10 +198,18 @@
                                         var lng = assetList[i].longitude;
                                          %>
                                     <tr>
-                                        <td><%=name %></td>
-                                        <td><%=address %></td>
-                                        <td><%=token %></td>
-                                        <td><%=price %></td>
+                                        <td>
+                                            <%=name %>
+                                        </td>
+                                        <td>
+                                            <%=address %>
+                                        </td>
+                                        <td>
+                                            <%=token %>
+                                        </td>
+                                        <td>
+                                            <%=price %>
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
                                                 <i class="fa fa-map-marker"></i>
@@ -222,10 +217,10 @@
                                         </td>
                                     </tr>
                                     <% } %>
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
+
                 </div>
 
             </div>
