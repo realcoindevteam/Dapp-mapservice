@@ -17,9 +17,25 @@ var databaseLoader = require('./database/database_loader');
 var app = express();
 
 var schedule = require('node-schedule');
+var winston = require('winston');
+var moment = require('moment');
 
-var j = schedule.scheduleJob('0 1 * * *', function() {
-    console.log('---------- batch function called');
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.File({
+            level: 'info',
+            timestamp:function() {
+                return moment().format("YYYY-MM-DD HH:mm:ss");
+            },
+            filename: 'batchjob.log',
+            json:false
+        })
+    ]
+});
+
+var j = schedule.scheduleJob('*/1 * * * *', function() {
+    logger.info(moment().format("YYYY-MM-DD HH:mm:ss") + ' batch function called');
+    console.log(moment().format("YYYY-MM-DD HH:mm:ss") + ' batch function called');
 })
 
 app.set('views', __dirname + '/views');
