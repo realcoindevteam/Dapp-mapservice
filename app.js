@@ -16,6 +16,12 @@ var databaseLoader = require('./database/database_loader');
 
 var app = express();
 
+var schedule = require('node-schedule');
+
+var j = schedule.scheduleJob('0 1 * * *', function() {
+    console.log('---------- batch function called');
+})
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('port', config.server_port || 3000);
