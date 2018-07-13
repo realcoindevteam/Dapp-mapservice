@@ -94,6 +94,9 @@
 <body class="hold-transition skin-blue sidebar-mini bg-gray">
     <script>
         var defaultPage = <%=defaultPage %>;
+        if(!defaultPage) {
+            defaultPage = 1;
+        }
         $(document).ready(function() {
             
             console.log('default -> ' + defaultPage);
