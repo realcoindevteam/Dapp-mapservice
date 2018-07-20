@@ -33,7 +33,7 @@ const logger = winston.createLogger({
     ]
 });
 
-var j = schedule.scheduleJob('*/1 * * * *', function() {
+var j = schedule.scheduleJob('0 1 * * *', function() {
     logger.info(moment().format("YYYY-MM-DD HH:mm:ss") + ' batch function called');
     console.log(moment().format("YYYY-MM-DD HH:mm:ss") + ' batch function called');
 })
