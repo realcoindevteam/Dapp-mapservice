@@ -12,7 +12,6 @@ module.exports = function (router, passport) {
     router.route('/login').get(function (req, res) {
         console.log('/login get routing called : ' + req.user);
         res.redirect('/login.html');
-        //   res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
     router.route('/login').post(passport.authenticate('local-login', {
@@ -42,7 +41,7 @@ module.exports = function (router, passport) {
         failureFlash: true
     }));
 
-    router.route('/signupsuccess').get(function(req, res) {
+    router.route('/signupsuccess').get(function (req, res) {
         console.log('/signupsuccess get routing called');
         res.send('<p>Sign up success<br><a href="/login">Login</a></p>');
     });
@@ -60,7 +59,7 @@ module.exports = function (router, passport) {
         console.log('/map route called ');
         var paramId = req.body.id || req.query.id;
         console.log('id -> ' + paramId);
-        
+
         var pool = req.app.get('pool');
         pool.getConnection(function (err, conn) {
             if (err) {
@@ -81,10 +80,6 @@ module.exports = function (router, passport) {
                     console.log('실행된 SQL -> ' + exec.sql);
                     var assetList = rows;
 
-                    // for (var i = 0; i < assetList.length; i++) {
-                    //     console.log('#' + assetList[i].id + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
-                    //     // console.dir(assetList[i]);
-                    // }
                     console.log('after stringify');
                     console.dir(assetList);
 
@@ -92,7 +87,7 @@ module.exports = function (router, passport) {
                         console.log('user is array');
                         // console.dir(req.user[0]);
                         userInfo = req.user[0];
-                        res.render('map.ejs', { id:paramId, assetList:assetList });
+                        res.render('map.ejs', { id: paramId, assetList: assetList });
                     } else {
                         console.log('user is not array');
                         //  console.dir(req.user);
@@ -100,7 +95,6 @@ module.exports = function (router, passport) {
                         //res.render('profile.ejs', { user: req.user });
                     }
                 });
-
         });
 
     });
@@ -170,9 +164,6 @@ module.exports = function (router, passport) {
     router.route('/profile').get(function (req, res) {
         console.log('/profile get routing called');
 
-        console.log('req.user instance');
-        // console.dir(req.user);
-
         var defaultPage = req.body.default || req.query.default;
         console.log('default page -> ' + defaultPage);
 
@@ -181,22 +172,13 @@ module.exports = function (router, passport) {
             res.redirect('/login');
         } else {
             console.log('사용자 인증된 상태임.');
-
             var userInfo;
-            //var assetList = mockupData.assetList;
-            var tablename = 'assets';
 
             var paramLat = req.body.lat || req.query.lat;
             var paramLng = req.body.lng || req.query.lng;
 
             console.log('profile lat -> ' + paramLat + ', lng -> ' + paramLng);
             var coordinate = { lat: paramLat, lng: paramLng };
-            var isSetCoordinate = false;
-            // if(paramLat && paramLng) {
-            //     isSetCoordinate = true;
-            //     res.render('admin.ejs', { coordinate: coordinate });
-            //     return;
-            // }
 
             var pool = req.app.get('pool');
 
@@ -222,37 +204,23 @@ module.exports = function (router, passport) {
 
                         for (var i = 0; i < assetList.length; i++) {
                             console.log('#' + assetList[i].id + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
-                            // console.dir(assetList[i]);
                         }
 
                         if (Array.isArray(req.user)) {
                             console.log('user is array');
-                            // console.dir(req.user[0]);
                             userInfo = req.user[0];
-                            //res.render('profile.ejs', { defaultPage: defaultPage, assetList: assetList, coordinate: coordinate });
                             res.render('admin.ejs', { defaultPage: defaultPage, assetList: assetList, coordinate: coordinate });
                         } else {
                             console.log('user is not array');
-                            //  console.dir(req.user);
                             userInfo = req.user;
-                            //res.render('profile.ejs', { user: req.user });
                         }
                     });
-
             });
-
-            // console.log('user grade : ' + userInfo.grade);
-            // if(userInfo.grade == 'admin') {
-            //     res.render('admin.ejs', { assetList: assetList} );
-            // } else {
-            //     res.render('profile.ejs', { assetList: assetList} );
-            // }
         }
     });
 
     router.route('/logout').get(function (req, res) {
         console.log('/logout get routing called');
-
         req.logout();
         res.redirect('/login');
     });
@@ -277,7 +245,6 @@ module.exports = function (router, passport) {
 
     router.route('testlist').get(function (req, res) {
         console.log('/testlist get routing called');
-
     });
 };
 
