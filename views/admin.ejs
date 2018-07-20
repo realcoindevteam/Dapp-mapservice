@@ -110,13 +110,18 @@
             <div class="tab-content">
                 <div id="admin" class="container tab-pane active">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-5">
-                        <h4 class="box-title">Asset Info</h4>
+                    <div class="col-sm-8">
+                        <h3 class="box-title">Asset Info</h3>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-info pull-right btn-sm" style="margin-right:20px;" onclick="moveToMap()">
+                            <i class="fa fa-map-marker"></i>
+                        </button>
+                    </div>
+                    <div class="col-sm-1">
                         <button type="button" class="btn btn-light pull-right" style="color:gray;" onclick="logout()">logout</button>
                     </div>
-
+                    <br>
                     <br>
                     <br>
                     <br>
@@ -166,9 +171,7 @@
                                 </div>
                                 <br>
                                 <button type="button" class="btn btn-primary pull-right col-xs-2" onclick="save()">저장</button>
-                                <button type="button" class="btn btn-info pull-right btn-sm" style="margin-right:20px;" onclick="moveToMap()">
-                                    <i class="fa fa-map-marker"></i>
-                                </button>
+
 
                             </form>
                     </div>
@@ -176,11 +179,13 @@
                 </div>
 
                 <div id="assets" class="tab-pane fade">
-
+                    <h3 class="box-title" style="margin-left:20px;">Realcoin Foundation Assets</h3>
+                    <br><br>
                     <div class="table-responsive">
                         <table class="table no-margin">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>Name</th>
                                     <th>Address</th>
                                     <th>Token</th>
@@ -199,6 +204,11 @@
                                          %>
                                     <tr>
                                         <td>
+                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
+                                                <i class="fa fa-map-marker"></i>
+                                            </button>
+                                        </td>
+                                        <td>
                                             <%=name %>
                                         </td>
                                         <td>
@@ -209,11 +219,6 @@
                                         </td>
                                         <td>
                                             <%=price %>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
-                                                <i class="fa fa-map-marker"></i>
-                                            </button>
                                         </td>
                                     </tr>
                                     <% } %>
