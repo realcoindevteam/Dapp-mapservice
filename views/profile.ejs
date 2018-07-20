@@ -41,8 +41,6 @@
             xhr.send();
         }
 
-
-
         function logout() {
             var form = document.createElement("form");
             form.setAttribute("method", "GET");
@@ -67,65 +65,26 @@
     </script>
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini bg-gray">
-    <script>
-        var defaultPage = <%=defaultPage %>;
-        if (!defaultPage) {
-            defaultPage = 1;
-        }
-        $(document).ready(function () {
-
-            console.log('default -> ' + defaultPage);
-            if (defaultPage == 1) {
-                $('.nav-tabs a[href="#admin"]').tab('show')
-            } else if (defaultPage == 2) {
-                $('.nav-tabs a[href="#assets"]').tab('show')
-            }
-        });
-    </script>
+<body class="bg-gray">
+    <br>
     <div class="container">
-        <br>
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#balance" class="nav-link active" data-toggle="tab">My Balance</a>
-                </li>
-                <li>
-                    <a href="#assets" data-toggle="tab">Real Estate List</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div id="balance" class="container tab-pane active">
-                    <br>
-                    <h3>Balance page</h3>
-                    <div >
-                        <p class="col-sm-8" id='etherbalance'></p>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="col-sm-8">
-                        <p id='transferevent'></p>
-                    </div>
-                    <script>
-                        getEtherBalance();
-                        getTransferEvent();
-                    </script>
-                </div>
-
-                <div id="assets" class="tab-pane fade">
-
-                    <div class="table-responsive">
-                        <table class="table no-margin">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Token</th>
-                                    <th>price</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% for(var i = 0; i < assetList.length; i++) {
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h2 class="box-title">Realcoin Foundation Assets</h2>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table no-margin">
+                    <thead>
+                        <tr>
+                            <th>Map</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Token</th>
+                            <th>price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < assetList.length; i++) {
                                         var id = assetList[i].id;
                                         var name = assetList[i].name;
                                         var address = assetList[i].address;
@@ -134,32 +93,29 @@
                                         var lat = assetList[i].latitude;
                                         var lng = assetList[i].longitude;
                                          %>
-                                    <tr>
-                                        <td>
-                                            <%=name %>
-                                        </td>
-                                        <td>
-                                            <%=address %>
-                                        </td>
-                                        <td>
-                                            <%=token %>
-                                        </td>
-                                        <td>
-                                            <%=price %>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
-                                                <i class="fa fa-map-marker"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <% } %>
-                            </tbody>
-                        </table>
-                    </div>
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-light btn-sm" onclick="selectasset('<%=id %>')">
+                                        <i class="fa fa-map-marker"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <%=name %>
+                                </td>
+                                <td>
+                                    <%=address %>
+                                </td>
+                                <td>
+                                    <%=token %>
+                                </td>
+                                <td>
+                                    <%=price %>
+                                </td>
 
-                </div>
-
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

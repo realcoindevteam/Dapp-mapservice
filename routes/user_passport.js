@@ -9,6 +9,11 @@ module.exports = function (router, passport) {
         res.redirect('/profile');
     });
 
+    router.route('/admin').get(function (req, res) {
+        console.log('/admin called');
+        res.redirect('/adminpage')
+    });
+
     router.route('/login').get(function (req, res) {
         console.log('/login get routing called : ' + req.user);
         res.redirect('/login.html');
@@ -22,7 +27,7 @@ module.exports = function (router, passport) {
 
     router.route('/loginsuccess').get(function (req, res) {
         console.log('/loginsuccess get routing called');
-        res.send('<p>login success<br><a href="/profile">my page 로 이동</a></p>');
+        res.send('<p>login success<br><a href="/adminpage">my page 로 이동</a></p>');
     });
 
     router.route('/loginfailed').get(function (req, res) {
@@ -90,9 +95,8 @@ module.exports = function (router, passport) {
                         res.render('map.ejs', { id: paramId, assetList: assetList });
                     } else {
                         console.log('user is not array');
-                        //  console.dir(req.user);
                         userInfo = req.user;
-                        //res.render('profile.ejs', { user: req.user });
+                        res.render('map.ejs', { id: paramId, assetList: assetList });
                     }
                 });
         });
@@ -161,8 +165,46 @@ module.exports = function (router, passport) {
         }
     });
 
-    router.route('/profile').get(function (req, res) {
-        console.log('/profile get routing called');
+    router.route('/profile').get(function(req, res) {
+        var paramLat = req.body.lat || req.query.lat;
+        var paramLng = req.body.lng || req.query.lng;
+
+        console.log('profile lat -> ' + paramLat + ', lng -> ' + paramLng);
+        var coordinate = { lat: paramLat, lng: paramLng };
+
+        var pool = req.app.get('pool');
+
+        pool.getConnection(function (err, conn) {
+            if (err) {
+                conn.release();
+                console.log('get profile connection error');
+                return;
+            }
+
+            var exec = conn.query("select * from assets", [],
+                function (err, rows) {
+                    conn.release();
+
+                    if (err) {
+                        console.log('select assets error');
+                        res.send('<h3>자산 검색 에러<h3>');
+                        return;
+                    }
+
+                    console.log('실행된 SQL -> ' + exec.sql);
+                    var assetList = rows;
+
+                    for (var i = 0; i < assetList.length; i++) {
+                        console.log('#' + assetList[i].id + ' -> ' + assetList[i].name + ', ' + assetList[i].address);
+                    }
+
+                    res.render('profile.ejs', { assetList: assetList, coordinate: coordinate });
+                });
+        });
+    });
+
+    router.route('/adminpage').get(function (req, res) {
+        console.log('/adminpage get routing called');
 
         var defaultPage = req.body.default || req.query.default;
         console.log('default page -> ' + defaultPage);
@@ -177,7 +219,7 @@ module.exports = function (router, passport) {
             var paramLat = req.body.lat || req.query.lat;
             var paramLng = req.body.lng || req.query.lng;
 
-            console.log('profile lat -> ' + paramLat + ', lng -> ' + paramLng);
+            console.log('adminpage lat -> ' + paramLat + ', lng -> ' + paramLng);
             var coordinate = { lat: paramLat, lng: paramLng };
 
             var pool = req.app.get('pool');
