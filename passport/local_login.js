@@ -22,8 +22,8 @@ module.exports = new LocalStrategy({
 
         console.log('데이터베이스 연결 스레드 아이디 : ' + conn.threadId);
 
-        var tablename = 'user_account';
-        var columns = ['email', 'firstName', 'password']
+        var tablename = 'admin_account';
+        var columns = ['email', 'last_name', 'password']
         var exec = conn.query("select ?? from ?? where email = ?", [columns, tablename, email], 
         function(err, rows) {
             conn.release();
@@ -36,18 +36,15 @@ module.exports = new LocalStrategy({
             console.log('쿼리 성공');
             console.dir(rows);
 
+            if(!rows[0]) {
+                console.log('there is no user ' + email);
+                return done(null, false, req.flash('loginMessage', '등록된 계정이 없습니다.'));
+            }
 
-            // if(!rows[0]) {
-            //     console.log('there is no user ' + email);
-            //     return done(null, false, req.flash('loginMessage', '등록된 계정이 없습니다.'));
-            // }
+            console.log('email -> ' + email + ', rows.email -> ' + rows[0].email + ', result -> ' + (email == rows[0].email));
+            console.log('password -> ' + password + ', rows.password -> ' + rows[0].password + ', result -> ' + (password == rows[0].password));
 
-            // console.log('email -> ' + email + ', rows.email -> ' + rows[0].email + ', result -> ' + (email == rows[0].email));
-            // console.log('password -> ' + password + ', rows.password -> ' + rows[0].password + ', result -> ' + (password == rows[0].password));
-
-       //     var authenticated = (email == rows[0].email && password == rows[0].password);
-       //     var authenticated = email == rows[0].email;
-            var authenticated = true;
+            var authenticated = (email == rows[0].email && password == rows[0].password);
             console.log('encrypted password -> ' + encryptPassword(password, Math.round((new Date().valueOf() * Math.random())) + ''));
             if(!authenticated) {
                 console.log('password does not match');

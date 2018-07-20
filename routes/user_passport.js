@@ -69,7 +69,7 @@ module.exports = function (router, passport) {
                 return;
             }
 
-            var exec = conn.query("select * from assets2", [],
+            var exec = conn.query("select * from assets", [],
                 function (err, rows) {
                     conn.release();
 
@@ -151,7 +151,7 @@ module.exports = function (router, passport) {
                 }
 
                 var data = { name: paramName, token: paramToken, latitude: paramLat, longitude: paramLng, address: paramAddress, price: paramPrice };
-                var exec = conn.query('insert into assets2 set ?', data, function (err, result) {
+                var exec = conn.query('insert into assets set ?', data, function (err, result) {
                     conn.release();
 
                     if (err) {
@@ -207,13 +207,13 @@ module.exports = function (router, passport) {
                     return;
                 }
 
-                var exec = conn.query("select * from assets2", [],
+                var exec = conn.query("select * from assets", [],
                     function (err, rows) {
                         conn.release();
 
-
                         if (err) {
                             console.log('select assets error');
+                            res.send('<h3>자산 검색 에러<h3>');
                             return;
                         }
 
@@ -297,7 +297,7 @@ var addUser = function (pool, email, enabled, firstName, isUsing2FA, lastName, p
             id: 3, email: email, enabled: enabled, firstName: firstName, isUsing2FA: isUsing2FA,
             lastName: lastName, password: password, secret: secret
         };
-        var exec = conn.query('insert into user_account set ?', data, function (err, result) {
+        var exec = conn.query('insert into admin_account set ?', data, function (err, result) {
             conn.release();
             console.log('실행된 SQL : ' + exec.sql);
 
