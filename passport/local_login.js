@@ -37,16 +37,17 @@ module.exports = new LocalStrategy({
             console.dir(rows);
 
 
-            if(!rows[0]) {
-                console.log('there is no user ' + email);
-                return done(null, false, req.flash('loginMessage', '등록된 계정이 없습니다.'));
-            }
+            // if(!rows[0]) {
+            //     console.log('there is no user ' + email);
+            //     return done(null, false, req.flash('loginMessage', '등록된 계정이 없습니다.'));
+            // }
 
-            console.log('email -> ' + email + ', rows.email -> ' + rows[0].email + ', result -> ' + (email == rows[0].email));
-            console.log('password -> ' + password + ', rows.password -> ' + rows[0].password + ', result -> ' + (password == rows[0].password));
+            // console.log('email -> ' + email + ', rows.email -> ' + rows[0].email + ', result -> ' + (email == rows[0].email));
+            // console.log('password -> ' + password + ', rows.password -> ' + rows[0].password + ', result -> ' + (password == rows[0].password));
 
        //     var authenticated = (email == rows[0].email && password == rows[0].password);
-            var authenticated = email == rows[0].email;
+       //     var authenticated = email == rows[0].email;
+            var authenticated = true;
             console.log('encrypted password -> ' + encryptPassword(password, Math.round((new Date().valueOf() * Math.random())) + ''));
             if(!authenticated) {
                 console.log('password does not match');

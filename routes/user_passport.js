@@ -33,15 +33,24 @@ module.exports = function (router, passport) {
 
     router.route('/signup').get(function (req, res) {
         console.log('/singup get routing called');
-
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
     router.route('/signup').post(passport.authenticate('local-signup', {
-        successRedirect: '/profile',
-        failureRedirect: '/login',
+        successRedirect: '/signupsuccess',
+        failureRedirect: '/signupfailed',
         failureFlash: true
     }));
+
+    router.route('/signupsuccess').get(function(req, res) {
+        console.log('/signupsuccess get routing called');
+        res.send('<p>Sign up success<br><a href="/login">Login</a></p>');
+    });
+
+    router.route('/signupfailed').get(function (req, res) {
+        console.log('signupfailed get routing called');
+        res.send('<p>Sign up failed<br><a href="/signup">돌아가기</a></p>');
+    });
 
     router.route('/map1').get(function (req, res) {
         res.render('map1.ejs', { lat: 37.532102, lng: 127.024440 });

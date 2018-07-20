@@ -13,7 +13,7 @@ database.init = function(app, config) {
         host: config.db_url,
         user:config.db_id,
         password:config.db_password,
-        database:'testdb',
+        database:'realcoindb',
         debug:false
     });
 
@@ -24,7 +24,7 @@ database.init = function(app, config) {
             return;
         }
 
-        let createAssets = 'CREATE TABLE IF NOT EXISTS assets2('
+        let createAssets = 'CREATE TABLE IF NOT EXISTS assets('
             + 'id INT NOT NULL AUTO_INCREMENT,'
             + 'PRIMARY KEY(id),'
             + 'name VARCHAR(30),'
@@ -37,6 +37,22 @@ database.init = function(app, config) {
 
         conn.query(createAssets, function(err) {
             console.log('query -> ' + createAssets);
+            if (err) throw err;
+        });
+
+        let createAdmin = 'CREATE TABLE IF NOT EXISTS admin_account('
+        + 'id INT NOT NULL AUTO_INCREMENT,'
+        + 'PRIMARY KEY(id),'
+        + 'email VARCHAR(255),'
+        + 'last_name VARCHAR(255),'
+        + 'first_name VARCHAR(255),'
+        + 'password VARCHAR(255),'
+        + 'address VARCHAR(255),'
+        + 'nationality VARCHAR(255)'
+        + ')';
+
+        conn.query(createAdmin, function(err) {
+            console.log('query -> ' + createAdmin);
             if (err) throw err;
         });
     });
