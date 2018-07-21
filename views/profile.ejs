@@ -66,14 +66,22 @@
 </head>
 
 <body class="bg-gray">
-    <br>
-    <div class="container">
+    <div class="container" style="margin-top:35px">
         <div class="box box-primary">
-            <div class="box-header with-border">
+            <div class="box-header with-border" style="height:50px;">
+                <div class="pull-right box-tools">
+                    <select name="state" id="maxRows" class="form-control" style="width:150px;">
+                        <option value="5000">Show All</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">15</option>
+                        <option value="50">20</option>
+                    </select>
+                </div>
                 <h2 class="box-title">Realcoin Foundation Assets</h2>
             </div>
             <div class="box-body no-padding">
-                <table class="table no-margin">
+                <table id="mytable" class="table no-margin">
                     <thead>
                         <tr>
                             <th>Map</th>
@@ -116,9 +124,56 @@
                             <% } %>
                     </tbody>
                 </table>
+                <div class="pagination-container" style="margin-left:20px">
+                    <nav>
+                        <ul class="pagination"></ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        var table = '#mytable'
+        $('#maxRows').on('change', function () {
+            $('.pagination').html('')
+            var trnum = 0
+            var maxRows = parseInt($(this).val())
+            var totalRows = $(table + ' tbody tr').length
+            $(table + ' tr:gt(0)').each(function () {
+                trnum++
+                if (trnum > maxRows) {
+                    $(this).hide()
+                }
+                if (trnum <= maxRows) {
+                    $(this).show()
+                }
+            })
+
+            if (totalRows > maxRows) {
+                var pagenum = Math.ceil(totalRows / maxRows)
+                for (var i = 1; i <= pagenum;) {
+                    $('.pagination').append('<li data-page="' + i + '">\<span>' + i++ + '<span class="sr-only">(current)</span></span>\<li>').show()
+                }
+            }
+
+            $('.pagination li:first-child').addClass('active')
+            $('.pagination li').on('click', function () {
+                var pageNum = $(this).attr('data-page')
+                var trIndex = 0;
+                $('.pagination li').removeClass('active')
+                $(this).addClass('active')
+                $(table + ' tr:gt(0)').each(function () {
+                    trIndex++
+                    if (trIndex > (maxRows * pageNum) || trIndex <= ((maxRows * pageNum) - maxRows)) {
+                        $(this).hide()
+                    } else {
+                        $(this).show()
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 
 </html>

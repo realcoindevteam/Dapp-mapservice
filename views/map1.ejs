@@ -25,7 +25,7 @@
             console.log('func back() lat -> ' + gLat + ', lng -> ' + gLng);
             var form = document.createElement("form");
             form.setAttribute("method", 'GET');
-            form.setAttribute("action", "/profile");
+            form.setAttribute("action", "/adminpage");
 
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
@@ -66,7 +66,6 @@
             map = new google.maps.Map(document.getElementById('map'), options);
 
             map.addListener('click', function (event) {
-               // placeMarker(map, event.latLng);
                 console.log('click -> ' + event.latLng);
                 document.querySelector('#curlat').innerHTML = event.latLng.lat();
                 document.querySelector('#curlng').innerHTML = event.latLng.lng();
@@ -75,8 +74,6 @@
                 deleteMarkers();
                 addMarker(event.latLng);
                 showMarkers();
-                // document.querySelector('#coordinate').innerHTML = event.latLng.lat();
-                // document.querySelector('#coordinate1').innerHTML = event.latLng.lng();
             });
         }
 
@@ -89,7 +86,7 @@
         }
 
         function setMapOnAll(map) {
-            for(var i = 0; i < markers.length; i++) {
+            for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(map);
             }
         }

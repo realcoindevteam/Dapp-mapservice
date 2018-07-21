@@ -165,7 +165,7 @@ module.exports = function (router, passport) {
         }
     });
 
-    router.route('/profile').get(function(req, res) {
+    router.route('/profile').get(function (req, res) {
         var paramLat = req.body.lat || req.query.lat;
         var paramLng = req.body.lng || req.query.lng;
 
