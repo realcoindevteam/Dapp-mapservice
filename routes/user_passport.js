@@ -20,7 +20,7 @@ module.exports = function (router, passport) {
     });
 
     router.route('/login').post(passport.authenticate('local-login', {
-        successRedirect: '/loginsuccess',
+        successRedirect: '/admin',
         failureRedirect: '/loginfailed',
         failureFlash: true
     }));
@@ -32,7 +32,7 @@ module.exports = function (router, passport) {
 
     router.route('/loginfailed').get(function (req, res) {
         console.log('loginfailed get routing called');
-        res.send('<p>login failed</p>');
+        res.send('<p>login failed</p><a href="/login">돌아가기</a>');
     });
 
     router.route('/signup').get(function (req, res) {
