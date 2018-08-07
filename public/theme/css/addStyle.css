@@ -1,0 +1,21 @@
+@charset "utf-8";
+/* CSS Document */
+
+.bg01 {background:#7559bc url(../images/a1_bg2.png) no-repeat;}
+.login-logo {color:#fff;}
+.radius {border-radius:3px;}
+.radius5 {border-radius:5px;}
+.radius10 {border-radius:10px;}
+.radius20 {border-radius:20px;}
+
+#mytable th {height:35px; line-height:35px;}
+#mytable th, #mytable td {word-break: break-all;}
+.center {text-align:center; color:#fff; font-weight:bold;}
+.pd-t {padding-top:35px;}
+.btn-bg {background:#2db1b5;}
+.btn-rs { border-radius: 40px;}
+.ic-co {color:#fff;}
+
+.tab01 {width:100%;}
+.tab01 td {padding:5px 0;}
+.btn2 {width:200px;}

@@ -4,41 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="theme/css/font-awesome.min.css">
+    <link rel="stylesheet" href="theme/css/ionicons.min.css">
+    <link rel="stylesheet" href="theme/css/admin.min.css">
+    <link rel="stylesheet" href="theme/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="theme/css/addStyle.css">
 </head>
 
-<body>
-    <h1>Signup</h1>
-    <br>
+<body class="bg01">
+    <div class="login-box">
+        <div class="login-logo">
+            <b>SignUp</b>
+        </div>
+    <div class="login-box-body radius5">
     <form method="post" action="/signup">
-        <table>
+        <table class="tab01">
             <tr>
                 <td>
-                    <label>Email</label>
-                </td>
-                <td>
-                    <input type="text" name="email">
+                    <input type="text" name="email" placeholder="Email"  class="form-control radius" >
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>Password</label>
-                </td>
-                <td>
-                    <input type="password" name="password">
+                    <input type="password" name="password" placeholder="Password" class="form-control radius" >
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>Name</label>
+                    <input type="text" name="name" placeholder="Name" class="form-control radius" >
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    <input type="text" name="name">
+                    <input type="text" name="grade" placeholder="Grade" class="form-control radius" >
                 </td>
             </tr>
         </table>
-        <input type="submit" value="send" name="">
+        <div class="row">
+                <div class="col-xs-8">
+                    
+                </div>
+                <div class="col-xs-4">
+                    <button type="button" class="btn btn-primary btn-block radius20" onclick="">Send</button>
+                </div>
+        </div>
     </form>
-    <a href="/login">로그인 하기</a>
+    </div>
+    </div>
 </body>
 
 </html>

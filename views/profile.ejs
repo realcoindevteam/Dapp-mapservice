@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="theme/css/ionicons.min.css">
     <link rel="stylesheet" href="theme/css/admin.min.css">
     <link rel="stylesheet" href="theme/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="theme/css/addStyle.css">
 
     <script>
         function getEtherBalance() {
@@ -65,12 +66,14 @@
     </script>
 </head>
 
-<body class="bg-gray">
-    <div class="container" style="margin-top:35px">
-        <div class="box box-primary">
-            <div class="box-header with-border" style="height:50px;">
+<body class="bg01">
+    <div class="container pd-t" >
+        <h1><img src="theme/images/cac-logo.png" alt="cac" /></h1>
+        <h2 class="box-title center">Realcoin Foundation Assets</h2>
+        <div >
+            <div class="box-header" style="height:50px;">
                 <div class="pull-right box-tools">
-                    <select name="state" id="maxRows" class="form-control" style="width:150px;">
+                    <select name="state" id="maxRows" class="form-control radius" style="width:150px;">
                         <option value="5000">Show All</option>
                         <option value="5">5</option>
                         <option value="10">10</option>
@@ -78,9 +81,8 @@
                         <option value="50">20</option>
                     </select>
                 </div>
-                <h2 class="box-title">Realcoin Foundation Assets</h2>
             </div>
-            <div class="box-body no-padding">
+            <div class="box-body no-padding box box-primary">
                 <table id="mytable" class="table no-margin">
                     <thead>
                         <tr>
@@ -124,7 +126,7 @@
                             <% } %>
                     </tbody>
                 </table>
-                <div class="pagination-container" style="margin-left:20px">
+                <div class="pagination-container" style="text-align:center;">
                     <nav>
                         <ul class="pagination"></ul>
                     </nav>
